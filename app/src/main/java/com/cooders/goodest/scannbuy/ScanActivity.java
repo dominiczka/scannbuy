@@ -51,10 +51,9 @@ public class ScanActivity extends AppCompatActivity {
         mShopIdTextView = findViewById(R.id.shopIdTextView);
         mShopIdTextView.setText(shopId);
 
-        mCartButton = findViewById(R.id.cartButton);
+
+
         mScanButton = findViewById(R.id.scanProductButton);
-
-
         mScanButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(ScanActivity.this, BarcodeCaptureActivity.class);
@@ -65,6 +64,7 @@ public class ScanActivity extends AppCompatActivity {
         });
 
 
+        mCartButton = findViewById(R.id.cartButton);
         mCartButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Bundle extra = new Bundle();
@@ -72,7 +72,6 @@ public class ScanActivity extends AppCompatActivity {
                 Intent intent = new Intent(ScanActivity.this, CartActivity.class);
                 intent.putExtra("extra", extra);
                 startActivity(intent);
-                finish();
             }
         });
 
