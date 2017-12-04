@@ -1,14 +1,12 @@
-package com.cooders.goodest.scannbuy.barcode;
+package com.coders.goodest.scannbuy.barcode;
 
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.cooders.goodest.scannbuy.camera.GraphicOverlay;
+import com.coders.goodest.scannbuy.camera.GraphicOverlay;
 import com.google.android.gms.vision.barcode.Barcode;
 
 /**

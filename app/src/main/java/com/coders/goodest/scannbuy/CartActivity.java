@@ -1,8 +1,10 @@
-package com.cooders.goodest.scannbuy;
+package com.coders.goodest.scannbuy;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.cooders.goodest.scannbuy.R;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,8 @@ public class CartActivity extends AppCompatActivity {
             } else {
                 cartProductList= (ArrayList<String>) extra.getSerializable("objects");
             }
-        } else {
+        }
+        else {
             cartProductList = (ArrayList<String>) savedInstanceState.getSerializable("objects");
         }
 
