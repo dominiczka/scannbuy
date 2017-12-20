@@ -32,29 +32,26 @@ public class ScanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scan);
 
         scannedProductList = new ArrayList<String>();
-        String shopId; // Czy to na pewno ma być string?
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                shopId= null;
-            } else {
-                shopId= extras.getString("shopID");
-            }
-        } else {
-            shopId= (String) savedInstanceState.getSerializable("shopID");
-        }
+      //  String shopId; // Czy to na pewno ma być string?
+//        if (savedInstanceState == null) {
+//            Bundle extras = getIntent().getExtras();
+//            if(extras == null) {
+//                shopId= null;
+//            } else {
+//                shopId= extras.getString("shopID");
+//            }
+//        } else {
+//            shopId= (String) savedInstanceState.getSerializable("shopID");
+//        }
 
 
         //TODO 1 połączenie z baza, sprawdzenie sklepu
         //TODO 2 zapisanie nazwy sklepu
 
         mShopIdTextView = findViewById(R.id.shopIdTextView);
-        mShopIdTextView.setText(shopId);
+     //   mShopIdTextView.setText(shopId);
 
-        mCartButton = findViewById(R.id.cartButton);
         mScanButton = findViewById(R.id.scanProductButton);
-
-
         mScanButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(ScanActivity.this, BarcodeCaptureActivity.class);
@@ -64,7 +61,7 @@ public class ScanActivity extends AppCompatActivity {
             }
         });
 
-
+        mCartButton = findViewById(R.id.cartButton);
         mCartButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Bundle extra = new Bundle();
@@ -72,7 +69,6 @@ public class ScanActivity extends AppCompatActivity {
                 Intent intent = new Intent(ScanActivity.this, CartActivity.class);
                 intent.putExtra("extra", extra);
                 startActivity(intent);
-                finish();
             }
         });
 
