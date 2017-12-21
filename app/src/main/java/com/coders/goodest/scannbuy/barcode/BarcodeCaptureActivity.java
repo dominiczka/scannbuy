@@ -1,4 +1,4 @@
-package com.cooders.goodest.scannbuy.barcode;
+package com.coders.goodest.scannbuy.barcode;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -28,9 +28,9 @@ import com.cooders.goodest.scannbuy.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.CommonStatusCodes;
-import com.cooders.goodest.scannbuy.camera.CameraSource;
-import com.cooders.goodest.scannbuy.camera.CameraSourcePreview;
-import com.cooders.goodest.scannbuy.camera.GraphicOverlay;
+import com.coders.goodest.scannbuy.camera.CameraSource;
+import com.coders.goodest.scannbuy.camera.CameraSourcePreview;
+import com.coders.goodest.scannbuy.camera.GraphicOverlay;
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;

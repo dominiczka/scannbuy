@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cooders.goodest.scannbuy.ScanActivity"
+    tools:context="com.cooders.goodest.scannbuy.com.coders.goodest.scannbuy.ScanActivity"
     tools:layout_editor_absoluteY="81dp">
 
     <TextView

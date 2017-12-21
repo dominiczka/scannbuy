@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.cooders.goodest.scannbuy.MainActivity">
+    tools:context="com.cooders.goodest.scannbuy.com.coders.goodest.scannbuy.MainActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

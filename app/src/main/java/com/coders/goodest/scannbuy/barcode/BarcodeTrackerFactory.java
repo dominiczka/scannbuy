@@ -1,8 +1,8 @@
-package com.cooders.goodest.scannbuy.barcode;
+package com.coders.goodest.scannbuy.barcode;
 
 import android.content.Context;
 
-import com.cooders.goodest.scannbuy.camera.GraphicOverlay;
+import com.coders.goodest.scannbuy.camera.GraphicOverlay;
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.barcode.Barcode;

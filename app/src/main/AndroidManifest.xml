@@ -28,7 +28,7 @@
             android:value="barcode" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.coders.goodest.scannbuy.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -38,10 +38,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".barcode.BarcodeCaptureActivity"
+            android:name="com.coders.goodest.scannbuy.barcode.BarcodeCaptureActivity"
             android:label="Read Barcode" />
-        <activity android:name=".ScanActivity" />
-        <activity android:name=".CartActivity"></activity>
+        <activity android:name="com.coders.goodest.scannbuy.ScanActivity" />
+        <activity android:name="com.coders.goodest.scannbuy.CartActivity"></activity>
     </application>
 
 </manifest>

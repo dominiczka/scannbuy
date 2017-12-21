@@ -1,4 +1,4 @@
-package com.cooders.goodest.scannbuy;
+package com.coders.goodest.scannbuy;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cooders.goodest.scannbuy.barcode.BarcodeCaptureActivity;
+import com.coders.goodest.scannbuy.barcode.BarcodeCaptureActivity;
+import com.cooders.goodest.scannbuy.R;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 

@@ -1,4 +1,4 @@
-package com.cooders.goodest.scannbuy;
+package com.coders.goodest.scannbuy;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -19,6 +19,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+import com.coders.goodest.scannbuy.barcode.BarcodeCaptureActivity;
+import com.cooders.goodest.scannbuy.R;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.cooders.goodest.scannbuy.camera;
+package com.coders.goodest.scannbuy.camera;
 
 import android.content.Context;
 import android.graphics.Canvas;

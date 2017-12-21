@@ -1,4 +1,4 @@
-package com.cooders.goodest.scannbuy.camera;
+package com.coders.goodest.scannbuy.camera;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
