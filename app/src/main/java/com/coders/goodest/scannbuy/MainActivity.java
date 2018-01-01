@@ -19,19 +19,42 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import com.coders.goodest.scannbuy.barcode.BarcodeCaptureActivity;
 import com.cooders.goodest.scannbuy.R;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String QUERY_URL = "http://scanandbuy.000webhostapp.com/getShop.php";
+
 
     Button buttonStartShopping;
     LocationManager locationManager;
     LocationListener locationListener;
     Button mLocationButton;
-    
+    Button getshopAsyncBtn;
+    Location loc;
+    TextView coordinatesTV;
+    // ArrayList<String> shopList;
+    // String name;
+    // Double lokalizacjaX, lokalizacjaY;
+    //  String currentShop;
+
     // private static final String TAG = "BarcodeMain";
     // private static final int RC_BARCODE_CAPTURE = 9001;
 
@@ -42,9 +65,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         // Acquire a reference to the system Location Manager
         mLocationButton = findViewById(R.id.button2);
+        coordinatesTV = findViewById(R.id.coordinatesTV);
+        getshopAsyncBtn = findViewById(R.id.getshopAsyncBtn);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -57,7 +81,12 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("LOCATION",
                         "latitude" + location.getLatitude());
                 //zapraszam do logcata po lokalizacje :)
+                int shop;
+                loc = location;
+                coordinatesTV.setText("lat: " + location.getLatitude() + " | lon: " + location.getLongitude());
+//                queryShop(String.valueOf(location.getLongitude()),String.valueOf(location.getLatitude()));
             }
+
 
             @Override
             public void onStatusChanged(String s, int i, Bundle bundle) {
@@ -77,8 +106,31 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
+                0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,
+                0, locationListener);
+
         configure_button();
 
+
+        getshopAsyncBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                 queryShop("69","99");
+                //queryShop(String.valueOf(loc.getLongitude()),String.valueOf(loc.getLatitude()));
+            }
+        });
 
 
         buttonStartShopping = (Button) findViewById(R.id.buttonStartShopping);
@@ -91,7 +143,8 @@ public class MainActivity extends AppCompatActivity {
 //                startActivityForResult(intent, RC_BARCODE_CAPTURE);
 
                 Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-                    startActivity(intent);
+
+                startActivity(intent);
             }
         });
     }
@@ -171,8 +224,86 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //noinspection MissingPermission
                 locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+                Log.i("LOCATION","Your location: " + loc);
             }
         });
     }
-}
+    /*
+        public void findCurrentLocation(Location location){
+            for(String nazwa: shopList){
+                if(location.getLongitude()== lokalizacjaY && location.getLatitude()==lokalizacjaX){
+                    currentShop=nazwa;
+                }}
+        }
+    */
+    private void queryShop(String lattitude, String longitude) {
 
+        // Prepare your search string to be put in a URL
+        // It might have reserved characters or something
+        String urlString = "";
+//        try {
+        StringBuilder urlStringBuilder = new StringBuilder();
+        urlStringBuilder.append(QUERY_URL).append("?x=").append(lattitude).append("&y=").append(longitude);
+        //urlString = URLEncoder.encode(urlStringBuilder.toString(), "UTF-8");
+        Log.d("LOCATION","urlString = " + urlString + " | builder = " + urlStringBuilder.toString());
+//        } catch (UnsupportedEncodingException e) {
+//
+//            // if this fails for some reason, let the user know why
+//            e.printStackTrace();
+//            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//        }
+
+        // Create a client to perform networking
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        // Have the client get a JSONArray of data
+        // and define how to respond
+        Log.d("WEBSERVICE","calling: " + urlStringBuilder.toString());
+        try{
+            client.get(urlStringBuilder.toString(),
+                    new JsonHttpResponseHandler() {
+
+                        @Override
+                        protected Object parseResponse(String responseBody) throws JSONException {
+                            if (null == responseBody)
+                                return null;
+                            Object result = null;
+                            //trim the string to prevent start with blank, and test if the string is valid JSON, because the parser don't do this :(. If Json is not valid this will return null
+                            String jsonString = responseBody.trim();
+                            if (jsonString.startsWith("{") || jsonString.startsWith("[")) {
+                                result = new JSONTokener(jsonString).nextValue();
+                            }
+                            if (result == null) {
+                                result = jsonString;
+                            }
+                            Log.d("WS","response: " + result.toString());
+                            Log.d("WS","response: " + ((JSONArray)result).toString());
+                            return result;
+                        }
+
+                        @Override
+                        public void onSuccess(JSONArray jsonObject) {
+                            Toast.makeText(getApplicationContext(), jsonObject.toString(), Toast.LENGTH_LONG).show();
+
+                            // 8. For now, just log results
+                            Log.d("omg android", jsonObject.toString());
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Throwable throwable, JSONArray error) {
+                            // Display a "Toast" message
+                            // to announce the failure
+                            Toast.makeText(getApplicationContext(), "Error: " + statusCode + " " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+
+                            // Log error message
+                            // to help solve any problems
+                            Log.e("omg android", statusCode + " " + throwable.getMessage());
+                        }
+                    });
+        }catch (Exception e) {
+            Log.e("WS", "ERROR: ", e);
+        }
+
+    }
+
+}
