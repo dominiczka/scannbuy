@@ -1,4 +1,4 @@
-package com.cooders.goodest.scannbuy;
+package com.coders.goodest.scannbuy;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.cooders.goodest.scannbuy", appContext.getPackageName());
+        assertEquals("com.coders.goodest.scannbuy", appContext.getPackageName());
     }
 }

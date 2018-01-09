@@ -24,7 +24,7 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Toast;
 
-import com.cooders.goodest.scannbuy.R;
+import com.coders.goodest.scannbuy.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.CommonStatusCodes;

@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coders.goodest.scannbuy.barcode.BarcodeCaptureActivity;
-import com.cooders.goodest.scannbuy.R;
+import com.coders.goodest.scannbuy.R;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 

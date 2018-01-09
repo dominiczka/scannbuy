@@ -1,4 +1,4 @@
-package com.cooders.goodest.scannbuy;
+package com.coders.goodest.scannbuy;
 
 import org.junit.Test;
 

@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.cooders.goodest.scannbuy.R;
+import com.coders.goodest.scannbuy.R;
 
 import java.util.ArrayList;
 
