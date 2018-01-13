@@ -1,4 +1,4 @@
-﻿package com.coders.goodest.scannbuy;
+package com.coders.goodest.scannbuy;
 
 import android.content.Intent;
 import android.os.Bundle;
