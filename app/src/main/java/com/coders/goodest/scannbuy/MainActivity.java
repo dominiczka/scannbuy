@@ -105,8 +105,27 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         };
+
+
+        //Added the condition needed to display the coordinates to the location in android <6
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+
+             return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
+                +                0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,
+                +                0, locationListener);
+
+                configure_button();
+        }
+        else{
+            configure_button();
+        }
         
-        configure_button();
+
 
 
         getshopAsyncBtn.setOnClickListener(new View.OnClickListener() {
@@ -177,6 +196,8 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,

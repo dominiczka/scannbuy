@@ -3,6 +3,7 @@ package com.coders.goodest.scannbuy.barcode;
 
 import android.content.Context;
 import android.support.annotation.UiThread;
+import android.widget.Toast;
 
 import com.coders.goodest.scannbuy.camera.GraphicOverlay;
 import com.google.android.gms.vision.Detector;
@@ -47,7 +48,11 @@ public class BarcodeGraphicTracker extends Tracker<Barcode> {
     @Override
     public void onNewItem(int id, Barcode item) {
         mGraphic.setId(id);
+        //Code add to remove tab
+        if(mBarcodeUpdateListener == null) return;
         mBarcodeUpdateListener.onBarcodeDetected(item);
+        mBarcodeUpdateListener = null;
+
     }
 
     /**

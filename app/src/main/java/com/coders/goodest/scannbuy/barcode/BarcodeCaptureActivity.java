@@ -91,8 +91,8 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
 
         gestureDetector = new GestureDetector(this, new CaptureGestureListener());
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
-
-        Snackbar.make(mGraphicOverlay, "Tap to capture", Snackbar.LENGTH_SHORT).show();
+        //Removed snackbar on tap
+        //Snackbar.make(mGraphicOverlay, "Tap to capture", Snackbar.LENGTH_SHORT).show();
     }
 
     /**
@@ -416,5 +416,12 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
     @Override
     public void onBarcodeDetected(Barcode barcode) {
         //do something with barcode data returned
+
+        //Code add to remove tab
+        Intent mIntent = new Intent();
+        mIntent.putExtra(BarcodeObject, barcode);
+        setResult(CommonStatusCodes.SUCCESS, mIntent);
+        finish();
+
     }
 }
