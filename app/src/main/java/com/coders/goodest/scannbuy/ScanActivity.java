@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coders.goodest.scannbuy.barcode.BarcodeCaptureActivity;
-import com.coders.goodest.scannbuy.R;
 import com.coders.goodest.scannbuy.models.Product;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -32,38 +31,17 @@ public class ScanActivity extends AppCompatActivity {
     Button mCartButton;
     private static final int RC_BARCODE_CAPTURE = 9001; //czy to jest potrzebne?
 
-    ArrayList<String> scannedProductList;
-
     ArrayList<Product> productsInCart;
     private static final String PRODUCT_QUERY_URL = "http://scanandbuy.000webhostapp.com/get.php?id=";
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
 
-        scannedProductList = new ArrayList<String>();
         productsInCart = new ArrayList<Product>();
-        //  String shopId; // Czy to na pewno ma być string?
-//        if (savedInstanceState == null) {
-//            Bundle extras = getIntent().getExtras();
-//            if(extras == null) {
-//                shopId= null;
-//            } else {
-//                shopId= extras.getString("shopID");
-//            }
-//        } else {
-//            shopId= (String) savedInstanceState.getSerializable("shopID");
-//        }
-
-
-        //TODO 1 połączenie z baza, sprawdzenie sklepu
-        //TODO 2 zapisanie nazwy sklepu
 
         mShopIdTextView = findViewById(R.id.shopIdTextView);
-        //   mShopIdTextView.setText(shopId);
 
         mScanButton = findViewById(R.id.scanProductButton);
         mScanButton.setOnClickListener(new View.OnClickListener() {
@@ -79,16 +57,13 @@ public class ScanActivity extends AppCompatActivity {
         mCartButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Bundle extras = new Bundle();
-                extras.putSerializable("objects", scannedProductList);
+          //      extras.putSerializable("objects", scannedProductList);
                 extras.putSerializable("cart", productsInCart);
                 Intent intent = new Intent(ScanActivity.this, CartActivity.class);
                 intent.putExtras(extras);
                 startActivity(intent);
             }
         });
-
-
-
     }
 
     @Override
@@ -98,7 +73,6 @@ public class ScanActivity extends AppCompatActivity {
                 if (data != null) {
                     Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
                     Toast.makeText(getApplicationContext(), barcode.rawValue, Toast.LENGTH_SHORT).show();
-                    scannedProductList.add(barcode.rawValue);
                     queryProduct(barcode.rawValue);
                 }
             } else {
@@ -168,7 +142,5 @@ public class ScanActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("WS", "ERROR: ", e);
         }
-
     }
-
 }
