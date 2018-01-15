@@ -10,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coders.goodest.scannbuy.barcode.BarcodeCaptureActivity;
+import com.coders.goodest.scannbuy.R;
+import com.coders.goodest.scannbuy.fragments.ScanFragment;
 import com.coders.goodest.scannbuy.models.Product;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -23,12 +25,15 @@ import org.json.JSONTokener;
 
 import java.util.ArrayList;
 
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 public class ScanActivity extends AppCompatActivity {
 
     TextView mShopIdTextView;
     Button mScanButton;
     Button mCartButton;
+    Button fragmentButton;
     private static final int RC_BARCODE_CAPTURE = 9001; //czy to jest potrzebne?
 
     ArrayList<Product> productsInCart;
@@ -64,6 +69,13 @@ public class ScanActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        fragmentButton = findViewById(R.id.fragment);
+        fragmentButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showHide();
+
+            }});
     }
 
     @Override
@@ -143,4 +155,22 @@ public class ScanActivity extends AppCompatActivity {
             Log.e("WS", "ERROR: ", e);
         }
     }
+
+   public void showHide(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //find the fragment by View or Tag
+        ScanFragment myFrag = (ScanFragment) fragmentManager.findFragmentById(R.id.scanFragment);
+        if(myFrag.isHidden())
+            fragmentManager.beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .show(myFrag)
+                .commit();
+        else
+            fragmentManager.beginTransaction()
+               .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+               .hide(myFrag)
+               .commit();
+    }
+
 }
