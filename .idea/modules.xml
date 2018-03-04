@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ProjektZespolowyScann.iml" filepath="$PROJECT_DIR$/ProjektZespolowyScann.iml" />
+      <module fileurl="file://E:\scamandbuy\ProjektZespolowyScann.iml" filepath="E:\scamandbuy\ProjektZespolowyScann.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://E:\scamandbuy\app\app.iml" filepath="E:\scamandbuy\app\app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scamandbuy.iml" filepath="$PROJECT_DIR$/scamandbuy.iml" />
       <module fileurl="file://C:\Users\Kuba\Desktop\ProjektZespolowyScann\scannbuy.iml" filepath="C:\Users\Kuba\Desktop\ProjektZespolowyScann\scannbuy.iml" />
     </modules>
   </component>
