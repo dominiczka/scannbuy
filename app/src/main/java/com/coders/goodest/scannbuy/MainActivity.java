@@ -63,8 +63,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
         // Acquire a reference to the system Location Manager
         mLocationButton = findViewById(R.id.button2);
         coordinatesTV = findViewById(R.id.coordinatesTV);
