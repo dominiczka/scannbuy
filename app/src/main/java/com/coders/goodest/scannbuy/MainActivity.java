@@ -107,30 +107,30 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Added the condition needed to display the coordinates to the location in android <6
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            // taki sam if jest w metodzie onResume(), jeśli zmienimy coś tu, tam tez by wypadało
-             return;
-        }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
-                +                0, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,
-                +                0, locationListener);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                // taki sam if jest w metodzie onResume(), jeśli zmienimy coś tu, tam tez by wypadało
+                return;
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
+                    +                0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,
+                    +                0, locationListener);
 
-                configure_button();
+            configure_button();
         }
         else{
             configure_button();
         }
-        
+
 
 
 
         getshopAsyncBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 queryShop("69","99");
+                queryShop("69","99");
                 //queryShop(String.valueOf(loc.getLongitude()),String.valueOf(loc.getLatitude()));
             }
         });
@@ -161,13 +161,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                // taki sam if jest w metodzie onResume(), jeśli zmienimy coś tu, tam tez by wypadało
+                return;
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
+                    +                0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,
+                    +                0, locationListener);
 
-            return;
+
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
     }
 
 //    @Override
