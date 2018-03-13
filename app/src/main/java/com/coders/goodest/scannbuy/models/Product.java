@@ -13,6 +13,8 @@ public class Product implements Serializable{
     private String opis;
     private int ilosc_na_stanie;
     private String id_sklepu;
+    private int ImageID;
+    private int ilosc_w_koszyku;
 
     public Product(String id_kod_kreskowy, String nazwa, String producent, float cena, float waga_gramy, String kategoria, String opis, int ilosc_na_stanie, String id_sklepu) {
         this.id_kod_kreskowy = id_kod_kreskowy;
@@ -24,6 +26,7 @@ public class Product implements Serializable{
         this.opis = opis;
         this.ilosc_na_stanie = ilosc_na_stanie;
         this.id_sklepu = id_sklepu;
+        this.ilosc_w_koszyku=0;
     }
 
     public String getId_kod_kreskowy() {
@@ -33,6 +36,14 @@ public class Product implements Serializable{
     public void setId_kod_kreskowy(String id_kod_kreskowy) {
         this.id_kod_kreskowy = id_kod_kreskowy;
     }
+
+    public int getIlosc_w_koszyku(){return ilosc_w_koszyku;}
+
+    public void dodano_do_koszyka(){ilosc_w_koszyku++;}
+
+    public int getImage(){return ImageID;}
+
+    public void setImage(int id){ImageID=id;}
 
     public String getNazwa() {
         return nazwa;

@@ -45,7 +45,26 @@ public class ScanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scan);
 
         productsInCart = new ArrayList<Product>();
-
+        for(int i=0;i<2;i++)
+        {
+            boolean exists = false;
+            Product tmp = new Product("test", "fajki","lm", 15,100,"slodycze","Pychota",3,"1");
+            tmp.setImage(R.drawable.lm);
+            for(Product object : productsInCart)
+            {
+                if(object.getId_kod_kreskowy() == tmp.getId_kod_kreskowy())
+                {
+                    object.dodano_do_koszyka();
+                    exists=true;
+                    break;
+                }
+            }
+            if(!exists)
+            {
+                tmp.dodano_do_koszyka();
+                productsInCart.add(tmp);
+            }
+        }
         mShopIdTextView = findViewById(R.id.shopIdTextView);
 
         mScanButton = findViewById(R.id.scanProductButton);
@@ -126,6 +145,17 @@ public class ScanActivity extends AppCompatActivity {
                             try {
                                 JSONObject newProduct = jsonObject.getJSONObject(0);
                                 //addToCart(newProduct);
+                                boolean exists = false;
+                                for(Product object : productsInCart)
+                                {
+                                    if(object.getId_kod_kreskowy() == newProduct.optString("ID_KOD_KRESKOWY"))
+                                    {
+                                        object.dodano_do_koszyka();
+                                        exists = true;
+                                        break;
+                                    }
+                                }
+                                if(!exists){
                                 Product scannedProduct = new Product(
                                         newProduct.optString("ID_KOD_KRESKOWY"),
                                         newProduct.optString("NAZWA"),
@@ -139,7 +169,8 @@ public class ScanActivity extends AppCompatActivity {
                                 productsInCart.add(scannedProduct);
                                 Toast.makeText(getApplicationContext(), new StringBuilder("Dodano produkt ").append(productsInCart.get(productsInCart.size()-1).getNazwa()).append("!"), Toast.LENGTH_SHORT).show();
                                 Log.d("queryProduct", productsInCart.get(productsInCart.size()-1).getNazwa());
-                                Log.d("queryProduct", productsInCart.get(productsInCart.size()-1).getOpis());
+                                Log.d("queryProduct", productsInCart.get(productsInCart.size()-1).getOpis());}
+                                else Toast.makeText(getApplicationContext(), new StringBuilder("Dodano produkt ").append(productsInCart.get(productsInCart.size()-1).getNazwa()).append("!"), Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

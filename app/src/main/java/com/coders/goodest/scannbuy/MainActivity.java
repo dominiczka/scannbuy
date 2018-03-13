@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Added the condition needed to display the coordinates to the location in android <6
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 // taki sam if jest w metodzie onResume(), jeśli zmienimy coś tu, tam tez by wypadało

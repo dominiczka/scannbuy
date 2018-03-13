@@ -10,5 +10,14 @@
     <ListView
         android:id="@+id/cartProductListView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="461dp"></ListView>
+
+    <TextView
+        android:id="@+id/cartSummary"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="TextView"
+        android:paddingLeft="250dp"
+        tools:text="Summary" />
+
 </LinearLayout>
