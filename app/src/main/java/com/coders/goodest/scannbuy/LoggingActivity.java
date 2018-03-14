@@ -1,18 +1,11 @@
 package com.coders.goodest.scannbuy;
 
-import android.app.Activity;
 import android.content.Intent;
-
-import android.support.v7.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoggingActivity extends AppCompatActivity {
@@ -29,6 +22,7 @@ public class LoggingActivity extends AppCompatActivity {
         mEmailView = (EditText) findViewById(R.id.login);
         mPasswordView = (EditText) findViewById(R.id.password);
         mButtonLogin = (Button) findViewById(R.id.email_sign_in_button);
+        mButtonRegister = (Button) findViewById(R.id.register_button_loggin_activity);
 
 
         mButtonLogin.setOnClickListener(new View.OnClickListener() {
@@ -48,14 +42,14 @@ public class LoggingActivity extends AppCompatActivity {
             }
         });
 
-//        mButtonRegister.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//
-//                Intent intent = new Intent(LoggingActivity.this, REGISTERCLASS.class);
-//
-//                startActivity(intent);
-//            }
-//        });
+        mButtonRegister.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Intent intent = new Intent(LoggingActivity.this, RegisterActivity.class);
+
+                startActivity(intent);
+            }
+        });
 
     }
 }

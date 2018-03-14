@@ -73,7 +73,7 @@
         app:srcCompat="@drawable/logo" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/register_button_loggin_activity"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginBottom="40dp"

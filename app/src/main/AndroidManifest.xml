@@ -47,7 +47,8 @@
             android:label="Read Barcode" />
         <activity android:name=".ScanActivity" />
         <activity android:name=".CartActivity" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".RegisterActivity"></activity>
     </application>
 
 </manifest>
