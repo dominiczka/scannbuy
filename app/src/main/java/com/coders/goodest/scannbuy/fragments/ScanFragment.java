@@ -2,9 +2,12 @@ package com.coders.goodest.scannbuy.fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.coders.goodest.scannbuy.CartActivity;
 import com.coders.goodest.scannbuy.R;
 import com.coders.goodest.scannbuy.ScanActivity;
 
@@ -15,36 +18,40 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.content.Context;
 
-public class ScanFragment extends Fragment {
+public class ScanFragment extends Fragment implements CartActivity.OnUpdateViewListener {
     //private ScanFragmentActivityListener listener;
+    TextView productName;
+    TextView productPrice;
+    TextView productDescription;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scan, container, false);
-        ((ScanActivity)getActivity()).showHide();
-        OnClickListener clickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.back:
-                        ((ScanActivity)getActivity()).showHide();
-                        break;
-                    case R.id.cart:
 
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
-        Button back = (Button) view.findViewById(R.id.back);
-        Button cart = (Button) view.findViewById(R.id.cart);
 
-        cart.setOnClickListener(clickListener);
-        back.setOnClickListener(clickListener);
+        productName = view.findViewById(R.id.product);
+        productPrice = view.findViewById(R.id.price);
+        productDescription=view.findViewById(R.id.product_description);
+
+
 
         return view;
     }
 
 
+    @Override
+    public void onUpdateView(Bundle bundle) {
+        if (bundle!=null){
+            String prodName =  bundle.getString("nazwa");
+            Log.i("nazwa we fragmecie: ", prodName + " ");
+            Float prodPrice= bundle.getFloat("cena");
+            Log.i("cena we fragmecie: " , prodPrice + "");
+            String prodDesc =  bundle.getString("opis");
+            productName.setText(prodName);
+            productPrice.setText(prodPrice + " ");
+            productDescription.setText(prodDesc);
+        }
+    }
 }
