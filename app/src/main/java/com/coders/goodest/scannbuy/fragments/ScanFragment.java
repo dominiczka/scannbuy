@@ -1,22 +1,15 @@
 package com.coders.goodest.scannbuy.fragments;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.coders.goodest.scannbuy.CartActivity;
 import com.coders.goodest.scannbuy.R;
-import com.coders.goodest.scannbuy.ScanActivity;
-
-import android.widget.TextView;
-import android.app.Activity;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.content.Context;
 
 public class ScanFragment extends Fragment implements CartActivity.OnUpdateViewListener {
     //private ScanFragmentActivityListener listener;
@@ -31,12 +24,10 @@ public class ScanFragment extends Fragment implements CartActivity.OnUpdateViewL
         View view = inflater.inflate(R.layout.fragment_scan, container, false);
 
 
+        Log.d("FRAGMENT", "wejscie");
         productName = view.findViewById(R.id.product);
         productPrice = view.findViewById(R.id.price);
         productDescription=view.findViewById(R.id.product_description);
-
-
-
         return view;
     }
 
@@ -54,4 +45,5 @@ public class ScanFragment extends Fragment implements CartActivity.OnUpdateViewL
             productDescription.setText(prodDesc);
         }
     }
+
 }

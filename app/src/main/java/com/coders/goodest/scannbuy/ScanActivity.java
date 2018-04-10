@@ -2,6 +2,8 @@ package com.coders.goodest.scannbuy;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coders.goodest.scannbuy.barcode.BarcodeCaptureActivity;
-import com.coders.goodest.scannbuy.R;
 import com.coders.goodest.scannbuy.fragments.ScanFragment;
 import com.coders.goodest.scannbuy.models.Product;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -25,15 +26,14 @@ import org.json.JSONTokener;
 
 import java.util.ArrayList;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-
 public class ScanActivity extends AppCompatActivity {
 
     TextView mShopIdTextView;
     Button mScanButton;
     Button mCartButton;
-    Button fragmentButton;
+    Button mAddToCartButton;
+    Button mBackButton;
+    ScanFragment scanFragment;
     private static final int RC_BARCODE_CAPTURE = 9001; //czy to jest potrzebne?
 
     ArrayList<Product> productsInCart;
@@ -66,8 +66,17 @@ public class ScanActivity extends AppCompatActivity {
             }
         }
         mShopIdTextView = findViewById(R.id.shopIdTextView);
+        mBackButton = findViewById(R.id.back_button);
+
+        scanFragment = new ScanFragment();
+        setListener(scanFragment);
+        getSupportFragmentManager().beginTransaction().add(R.id.scanFragmentContainerScanActivity, scanFragment).commitNow();
+        hideScanFrangment();
+
+        mAddToCartButton = findViewById(R.id.add_to_cart_button);
 
         mScanButton = findViewById(R.id.scanProductButton);
+        mScanButton.setVisibility(View.VISIBLE);
         mScanButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(ScanActivity.this, BarcodeCaptureActivity.class);
@@ -78,6 +87,7 @@ public class ScanActivity extends AppCompatActivity {
         });
 
         mCartButton = findViewById(R.id.cartButton);
+        mCartButton.setVisibility(View.VISIBLE);
         mCartButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Bundle extras = new Bundle();
@@ -89,12 +99,12 @@ public class ScanActivity extends AppCompatActivity {
             }
         });
 
-        fragmentButton = findViewById(R.id.fragment);
-        fragmentButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                showHide();
-
-            }});
+//        fragmentButton = findViewById(R.id.fragment);
+//        fragmentButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                //showHide();
+//
+//            }});
     }
 
     @Override
@@ -156,7 +166,7 @@ public class ScanActivity extends AppCompatActivity {
                                     }
                                 }
                                 if(!exists){
-                                Product scannedProduct = new Product(
+                                final Product scannedProduct = new Product(
                                         newProduct.optString("ID_KOD_KRESKOWY"),
                                         newProduct.optString("NAZWA"),
                                         newProduct.optString("PRODUCENT"),
@@ -166,7 +176,50 @@ public class ScanActivity extends AppCompatActivity {
                                         newProduct.optString("OPIS"),
                                         Integer.parseInt(newProduct.optString("ILOSC_NA_STANIE")),
                                         newProduct.optString("ID_SKLEPU"));
-                                productsInCart.add(scannedProduct);
+
+
+
+
+                                    Bundle args = new Bundle();
+                                    Log.i("produkt do frag: ", scannedProduct.getNazwa());
+                                    args.putFloat("cena", scannedProduct.getCena());
+                                    args.putString("nazwa",scannedProduct.getNazwa());
+                                    args.putString("opis",scannedProduct.getOpis());
+
+
+                                    showScanFrangment();
+                                 //   listener.onUpdateView(args);
+                                    ///   productsInCart.add(scannedProduct);
+
+
+                                    mCartButton.setVisibility(View.INVISIBLE);
+                                    mScanButton.setVisibility(View.INVISIBLE);
+                                    mAddToCartButton.setVisibility(View.VISIBLE);
+                                    mBackButton.setVisibility(View.VISIBLE);
+
+                                    mAddToCartButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            addProduct(scannedProduct);
+                                            hideScanFrangment();
+                                            hideFragment();
+                                        }
+                                    });
+
+                                    mBackButton.setVisibility(View.VISIBLE);
+                                    mBackButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            hideScanFrangment();
+                                            hideFragment();
+                                        }
+                                    });
+                                    scanFragment.setArguments(args);
+                                    listener.onUpdateView(args);
+
+
+
+
                                 Toast.makeText(getApplicationContext(), new StringBuilder("Dodano produkt ").append(productsInCart.get(productsInCart.size()-1).getNazwa()).append("!"), Toast.LENGTH_SHORT).show();
                                 Log.d("queryProduct", productsInCart.get(productsInCart.size()-1).getNazwa());
                                 Log.d("queryProduct", productsInCart.get(productsInCart.size()-1).getOpis());}
@@ -175,7 +228,6 @@ public class ScanActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-
                         @Override
                         public void onFailure(int statusCode, Throwable throwable, JSONArray error) {
                             Toast.makeText(getApplicationContext(), "Error: " + statusCode + " " + throwable.getMessage(), Toast.LENGTH_LONG).show();
@@ -187,11 +239,44 @@ public class ScanActivity extends AppCompatActivity {
         }
     }
 
+    public void addProduct (Product product){
+        productsInCart.add(product);
+    }
+
+
+    @Override
+    public void onBackPressed(){
+        if (scanFragment.isHidden()){
+            Intent intent = new Intent(ScanActivity.this, MainActivity.class);
+            startActivity(intent);        }
+        else {
+            hideScanFrangment();
+            hideFragment();
+        }
+    }
+
+    public void hideFragment (){
+        mScanButton.setVisibility(View.VISIBLE);
+        mCartButton.setVisibility(View.VISIBLE);
+        mAddToCartButton.setVisibility(View.INVISIBLE);
+        mBackButton.setVisibility(View.INVISIBLE);
+    }
+    public interface OnUpdateViewListener{
+        public void onUpdateView(Bundle bundle);
+
+    }
+
+    private CartActivity.OnUpdateViewListener listener;
+
+    public void setListener(CartActivity.OnUpdateViewListener listener) {
+        this.listener = listener;
+    }
+
    public void showHide(){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         //find the fragment by View or Tag
-        ScanFragment myFrag = (ScanFragment) fragmentManager.findFragmentById(R.id.scanFragment);
+        ScanFragment myFrag = (ScanFragment) fragmentManager.findFragmentById(R.id.scanFragmentContainer);
         if(myFrag.isHidden())
             fragmentManager.beginTransaction()
                 .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -202,6 +287,21 @@ public class ScanActivity extends AppCompatActivity {
                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                .hide(myFrag)
                .commit();
+    }
+public void showScanFrangment(){
+    FragmentManager fragmentManager = getSupportFragmentManager();
+    fragmentManager.beginTransaction()
+            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+            .show(scanFragment)
+            .commit();
+}
+
+    public void hideScanFrangment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .hide(scanFragment)
+                .commit();
     }
 
 }

@@ -1,7 +1,5 @@
 package com.coders.goodest.scannbuy;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -9,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -75,15 +72,9 @@ public class CartActivity extends AppCompatActivity {
 
                 showScanFrangment();
                 listener.onUpdateView(args);
-
-
-
             }
         });
-
-
     }
-
 
     public void showScanFrangment(){
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -94,6 +85,7 @@ public class CartActivity extends AppCompatActivity {
         mCartProductsListView.setVisibility(View.INVISIBLE);
         mSummaryTextView.setVisibility(View.INVISIBLE);
     }
+
     public void hideScanFrangment(){
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -102,6 +94,23 @@ public class CartActivity extends AppCompatActivity {
                 .commit();
         // mCartProductsListView.setVisibility(View.INVISIBLE);
         //mSummaryTextView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onBackPressed(){
+        if (scanFragment.isHidden()){
+            Intent intent = new Intent(CartActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+        else {
+            hideScanFrangment();
+            hideFragment();
+        }
+    }
+
+    public void hideFragment (){
+        mCartProductsListView.setVisibility(View.VISIBLE);
+        mSummaryTextView.setVisibility(View.VISIBLE);
     }
 
     public interface OnUpdateViewListener{
