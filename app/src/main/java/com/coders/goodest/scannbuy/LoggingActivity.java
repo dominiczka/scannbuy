@@ -44,13 +44,17 @@ public class LoggingActivity extends AppCompatActivity {
 
         mButtonRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 Intent intent = new Intent(LoggingActivity.this, RegisterActivity.class);
-
                 startActivity(intent);
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed(){
+        finishAffinity();
+        System.exit(0);
     }
 }
 

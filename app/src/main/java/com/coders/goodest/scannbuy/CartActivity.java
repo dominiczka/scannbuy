@@ -99,8 +99,10 @@ public class CartActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         if (scanFragment.isHidden()){
-            Intent intent = new Intent(CartActivity.this, MainActivity.class);
+            Intent intent = new Intent(CartActivity.this, ScanActivity.class);
+            intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
+         //   finish();
         }
         else {
             hideScanFrangment();

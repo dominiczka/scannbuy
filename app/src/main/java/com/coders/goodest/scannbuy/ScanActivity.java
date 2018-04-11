@@ -95,6 +95,7 @@ public class ScanActivity extends AppCompatActivity {
                 extras.putSerializable("cart", productsInCart);
                 Intent intent = new Intent(ScanActivity.this, CartActivity.class);
                 intent.putExtras(extras);
+                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
             }
         });
@@ -248,7 +249,10 @@ public class ScanActivity extends AppCompatActivity {
     public void onBackPressed(){
         if (scanFragment.isHidden()){
             Intent intent = new Intent(ScanActivity.this, MainActivity.class);
-            startActivity(intent);        }
+            intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
+          //  finish();
+        }
         else {
             hideScanFrangment();
             hideFragment();

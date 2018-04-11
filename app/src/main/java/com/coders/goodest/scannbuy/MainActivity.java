@@ -13,7 +13,6 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,22 +21,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.coders.goodest.scannbuy.barcode.BarcodeCaptureActivity;
-import com.coders.goodest.scannbuy.R;
-import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.vision.barcode.Barcode;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.json.JSONTokener;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final String QUERY_URL = "http://scanandbuy.000webhostapp.com/getShop.php";
@@ -139,17 +128,20 @@ public class MainActivity extends AppCompatActivity {
         buttonStartShopping = (Button) findViewById(R.id.buttonStartShopping);
         buttonStartShopping.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-//                // launch barcode activity
-//                Intent intent = new Intent(MainActivity.this, BarcodeCaptureActivity.class);
-//                intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
-//                intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
-//                startActivityForResult(intent, RC_BARCODE_CAPTURE);
-
                 Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-
+             //   intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
+                finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed(){
+            Intent intent = new Intent(MainActivity.this, LoggingActivity.class);
+            intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
+            finish();
     }
 
     @Override
@@ -175,28 +167,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//
-//
-//        if (requestCode == RC_BARCODE_CAPTURE) {
-//            if (resultCode == CommonStatusCodes.SUCCESS) {
-//                if (data != null) {
-//                    Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
-//                    Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-//                    intent.putExtra("shopID", barcode.rawValue);
-//                    startActivity(intent);
-//                    finish();
-//                }
-//            } else {
-//                Toast.makeText(getApplicationContext(), getString(R.string.barcode_error), Toast.LENGTH_LONG).show();
-//            }
-//        }
-//        else {
-//            super.onActivityResult(requestCode, resultCode, data);
-//        }
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
