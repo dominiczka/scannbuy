@@ -37,7 +37,7 @@ public class ScanActivity extends AppCompatActivity {
     private static final int RC_BARCODE_CAPTURE = 9001; //czy to jest potrzebne?
 
     ArrayList<Product> productsInCart;
-    private static final String PRODUCT_QUERY_URL = "http://scanandbuy.000webhostapp.com/get.php?id=";
+    private static final String PRODUCT_QUERY_URL = "http://scanandbuy.000webhostapp.com/api/get.php?id=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

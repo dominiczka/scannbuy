@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.coders.goodest.scannbuy.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -17,6 +18,7 @@ import java.util.ArrayList;
  */
 
 public class ProductAdapter extends ArrayAdapter<Product> {
+    public static final String IMAGE_URL = "http://scanandbuy.000webhostapp.com/products/photos/";
 
     public ProductAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
@@ -54,7 +56,8 @@ public class ProductAdapter extends ArrayAdapter<Product> {
             ImageView mProductImage = view.findViewById(R.id.image);
 
             mProductOverallPrice.setText(Float.toString(product.getCena()*product.getIlosc_w_koszyku())+"zł");
-            mProductImage.setImageResource(product.getImage());
+            String imageUrl = IMAGE_URL + product.getId_kod_kreskowy() + ".png";
+            Picasso.with(getContext()).load(imageUrl).into(mProductImage);
             mProductNameTextView.setText(product.getNazwa());
             mProductPriceTextView.setText(Float.toString(product.getCena())+" zł");
             mProductDescriptionTextView.setText(product.getOpis());

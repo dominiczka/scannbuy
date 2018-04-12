@@ -29,7 +29,7 @@ import org.json.JSONException;
 import org.json.JSONTokener;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String QUERY_URL = "http://scanandbuy.000webhostapp.com/getShop.php";
+    private static final String QUERY_URL = "http://scanandbuy.000webhostapp.com/api/getShop.php";
 
 
     Button buttonStartShopping;

@@ -79,7 +79,6 @@ public class CartActivity extends AppCompatActivity {
     public void showScanFrangment(){
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                 .show(scanFragment)
                 .commit();
         mCartProductsListView.setVisibility(View.INVISIBLE);
@@ -89,7 +88,6 @@ public class CartActivity extends AppCompatActivity {
     public void hideScanFrangment(){
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                 .hide(scanFragment)
                 .commit();
         // mCartProductsListView.setVisibility(View.INVISIBLE);
