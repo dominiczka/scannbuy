@@ -138,10 +138,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-            Intent intent = new Intent(MainActivity.this, LoggingActivity.class);
-            intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(intent);
-            finish();
+        finishAffinity();
+        System.exit(0);
     }
 
     @Override
