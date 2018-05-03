@@ -25,17 +25,18 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.coders.goodest.scannbuy.R;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.CommonStatusCodes;
 import com.coders.goodest.scannbuy.camera.CameraSource;
 import com.coders.goodest.scannbuy.camera.CameraSourcePreview;
 import com.coders.goodest.scannbuy.camera.GraphicOverlay;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 /**
@@ -65,6 +66,8 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
     private ScaleGestureDetector scaleGestureDetector;
     private GestureDetector gestureDetector;
 
+    ArrayList<Barcode> barcodes;
+
     /**
      * Initializes the UI and creates the detector pipeline.
      */
@@ -72,6 +75,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.barcode_capture);
+        barcodes = new ArrayList<Barcode>();
 
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
@@ -413,15 +417,34 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
         }
     }
 
+
     @Override
     public void onBarcodeDetected(Barcode barcode) {
         //do something with barcode data returned
 
-        //Code add to remove tab
+        if (barcodes.isEmpty()){
+            barcodes.add(barcode);
+            return;
+        }
+        else {for (Barcode b: barcodes) {
+            if(!b.rawValue.equals(barcode.rawValue)){
+                barcodes.clear();
+                return;
+            }
+            if (barcodes.size() < 1){
+                barcodes.add(barcode);
+                return;
+            }
+            else onBarcodeChecked(barcodes.get(0));
+        }
+        }
+    }
+
+    public void onBarcodeChecked(Barcode barcode){
         Intent mIntent = new Intent();
         mIntent.putExtra(BarcodeObject, barcode);
         setResult(CommonStatusCodes.SUCCESS, mIntent);
         finish();
-
     }
+
 }

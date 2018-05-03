@@ -3,7 +3,6 @@ package com.coders.goodest.scannbuy.barcode;
 
 import android.content.Context;
 import android.support.annotation.UiThread;
-import android.widget.Toast;
 
 import com.coders.goodest.scannbuy.camera.GraphicOverlay;
 import com.google.android.gms.vision.Detector;
