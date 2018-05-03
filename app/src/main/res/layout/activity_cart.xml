@@ -24,6 +24,7 @@
     <ListView
         android:id="@+id/cartProductListView"
         android:layout_width="match_parent"
+        android:listSelector="@android:color/transparent"
         android:layout_height="461dp"></ListView>
 
     <TextView
