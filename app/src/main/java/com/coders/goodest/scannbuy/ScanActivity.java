@@ -47,7 +47,7 @@ public class ScanActivity extends AppCompatActivity {
         for(int i=0;i<2;i++)
         {
             boolean exists = false;
-            Product tmp = new Product("test", "fajki","lm", 15,100,"slodycze","Pychota",3,"1");
+            Product tmp = new Product("3086123399303", "fajki","lm", 15,100,"slodycze","Pychota",3,"1");
             tmp.setImage(R.drawable.lm);
             for(Product object : productsInCart)
             {
@@ -170,6 +170,7 @@ public class ScanActivity extends AppCompatActivity {
 
                                         Bundle args = new Bundle();
                                         Log.i("produkt do frag: ", product.getNazwa());
+                                        args.putString("id", product.getId_kod_kreskowy());
                                         args.putFloat("cena", product.getCena());
                                         args.putString("nazwa",product.getNazwa());
                                         args.putString("opis",product.getOpis());
@@ -216,6 +217,7 @@ public class ScanActivity extends AppCompatActivity {
 
                                     Bundle args = new Bundle();
                                     Log.i("produkt do frag: ", scannedProduct.getNazwa());
+                                    args.putString("id", scannedProduct.getId_kod_kreskowy());
                                     args.putFloat("cena", scannedProduct.getCena());
                                     args.putString("nazwa",scannedProduct.getNazwa());
                                     args.putString("opis",scannedProduct.getOpis());

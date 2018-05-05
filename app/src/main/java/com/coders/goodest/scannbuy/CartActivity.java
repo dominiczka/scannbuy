@@ -69,7 +69,7 @@ public class CartActivity extends AppCompatActivity {
                 args.putFloat("cena", productsInCart.get(position).getCena());
                 args.putString("nazwa",productsInCart.get(position).getNazwa());
                 args.putString("opis",productsInCart.get(position).getOpis());
-
+                args.putString("id", productsInCart.get(position).getId_kod_kreskowy());
                 showScanFrangment();
                 listener.onUpdateView(args);
             }

@@ -6,16 +6,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.coders.goodest.scannbuy.CartActivity;
 import com.coders.goodest.scannbuy.R;
+import com.squareup.picasso.Picasso;
 
 public class ScanFragment extends Fragment implements CartActivity.OnUpdateViewListener {
+    public static final String IMAGE_URL = "http://scanandbuy.000webhostapp.com/products/photos/";
     //private ScanFragmentActivityListener listener;
     TextView productName;
     TextView productPrice;
     TextView productDescription;
+    ImageView productImage;
 
 
 
@@ -28,6 +32,7 @@ public class ScanFragment extends Fragment implements CartActivity.OnUpdateViewL
         productName = view.findViewById(R.id.product);
         productPrice = view.findViewById(R.id.price);
         productDescription=view.findViewById(R.id.product_description);
+        productImage=view.findViewById(R.id.imageView);
         return view;
     }
 
@@ -40,6 +45,8 @@ public class ScanFragment extends Fragment implements CartActivity.OnUpdateViewL
             Float prodPrice= bundle.getFloat("cena");
             Log.i("cena we fragmecie: " , prodPrice + "");
             String prodDesc =  bundle.getString("opis");
+            String imageUrl = IMAGE_URL + bundle.getString("id") + ".png";
+            Picasso.with(getContext()).load(imageUrl).into(productImage);
             productName.setText(prodName);
             productPrice.setText(prodPrice + " ");
             productDescription.setText(prodDesc);
