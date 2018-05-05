@@ -7,18 +7,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.coders.goodest.scannbuy.services.UserService;
 
 public class LoggingActivity extends AppCompatActivity {
 
+    private UserService userService;
     private EditText mEmailView;
     private EditText mPasswordView;
     private Button mButtonLogin;
     private Button mButtonRegister;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logging);
 
+        userService = new UserService();
         mEmailView = (EditText) findViewById(R.id.login);
         mPasswordView = (EditText) findViewById(R.id.password);
         mButtonLogin = (Button) findViewById(R.id.email_sign_in_button);
@@ -35,8 +39,12 @@ public class LoggingActivity extends AppCompatActivity {
                     return;
                 }
                 else {
-                    Intent intent = new Intent(LoggingActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    try {
+                        userService.login(getApplicationContext(), emailtext, passwordtext);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
