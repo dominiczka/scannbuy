@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import java.util.List;
 import com.coders.goodest.scannbuy.barcode.BarcodeCaptureActivity;
 import com.coders.goodest.scannbuy.fragments.ScanFragment;
 import com.coders.goodest.scannbuy.models.Product;
@@ -112,7 +112,7 @@ public class ScanActivity extends AppCompatActivity {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
                     Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
-                    Toast.makeText(getApplicationContext(), barcode.rawValue, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), barcode.rawValue, Toast.LENGTH_SHORT).show();
                     queryProduct(barcode.rawValue);
                 }
             } else {
@@ -153,6 +153,15 @@ public class ScanActivity extends AppCompatActivity {
                         public void onSuccess(JSONArray jsonObject) {
                             try {
                                 JSONObject newProduct = jsonObject.getJSONObject(0);
+                                if(newProduct.optString("NAZWA").isEmpty())
+                                {
+                                    Intent intent = new Intent(ScanActivity.this, BarcodeCaptureActivity.class);
+                                    intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+                                    intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+                                    startActivityForResult(intent, RC_BARCODE_CAPTURE);
+                                    Toast.makeText(getApplicationContext(), new StringBuilder("Produktu nie ma w bazie."), Toast.LENGTH_SHORT).show();
+                                }
+                                 //Toast.makeText(getApplicationContext(), new StringBuilder(newProduct.optString("NAZWA")), Toast.LENGTH_SHORT).show();
                                 //addToCart(newProduct);
                                 boolean exists = false;
                                 mCartButton.setVisibility(View.INVISIBLE);
@@ -246,17 +255,27 @@ public class ScanActivity extends AppCompatActivity {
                                     scanFragment.setArguments(args);
                                     listener.onUpdateView(args);
 
-                                    Toast.makeText(getApplicationContext(), new StringBuilder("Dodano produkt ").append(productsInCart.get(productsInCart.size()-1).getNazwa()).append("!"), Toast.LENGTH_SHORT).show();
+                                   // Toast.makeText(getApplicationContext(), new StringBuilder("Dodano produkt ").append(productsInCart.get(productsInCart.size()-1).getNazwa()).append("!"), Toast.LENGTH_SHORT).show();
                                     Log.d("queryProduct", productsInCart.get(productsInCart.size()-1).getNazwa());
                                     Log.d("queryProduct", productsInCart.get(productsInCart.size()-1).getOpis());}
 
                             } catch (JSONException e) {
+                                Intent intent = new Intent(ScanActivity.this, BarcodeCaptureActivity.class);
+                                intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+                                intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+                                startActivityForResult(intent, RC_BARCODE_CAPTURE);
+                                Toast.makeText(getApplicationContext(), new StringBuilder("Produktu nie ma w bazie."), Toast.LENGTH_LONG).show();
+
                                 e.printStackTrace();
                             }
                         }
                         @Override
                         public void onFailure(int statusCode, Throwable throwable, JSONArray error) {
-                            Toast.makeText(getApplicationContext(), "Error: " + statusCode + " " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(ScanActivity.this, BarcodeCaptureActivity.class);
+                            intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+                            intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+                            startActivityForResult(intent, RC_BARCODE_CAPTURE);
+                           // Toast.makeText(getApplicationContext(), "Error: " + statusCode + " " + throwable.getMessage(), Toast.LENGTH_LONG).show();
                             Log.e("queryProduct", statusCode + " " + throwable.getMessage());
                         }
                     });
