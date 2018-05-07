@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,8 +22,6 @@ public class ScanFragment extends Fragment implements CartActivity.OnUpdateViewL
     TextView productDescription;
     ImageView productImage;
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scan, container, false);
@@ -33,6 +32,7 @@ public class ScanFragment extends Fragment implements CartActivity.OnUpdateViewL
         productPrice = view.findViewById(R.id.price);
         productDescription=view.findViewById(R.id.product_description);
         productImage=view.findViewById(R.id.imageView);
+
         return view;
     }
 
@@ -48,7 +48,7 @@ public class ScanFragment extends Fragment implements CartActivity.OnUpdateViewL
             String imageUrl = IMAGE_URL + bundle.getString("id") + ".png";
             Picasso.with(getContext()).load(imageUrl).into(productImage);
             productName.setText(prodName);
-            productPrice.setText(prodPrice + " ");
+            productPrice.setText(prodPrice + "");
             productDescription.setText(prodDesc);
         }
     }

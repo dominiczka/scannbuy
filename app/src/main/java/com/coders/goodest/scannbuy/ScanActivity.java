@@ -44,33 +44,38 @@ public class ScanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scan);
 
         productsInCart = new ArrayList<Product>();
-        for(int i=0;i<2;i++)
-        {
-            boolean exists = false;
-            Product tmp = new Product("3086123399303", "fajki","lm", 15,100,"slodycze","Pychota",3,"1");
-            tmp.setImage(R.drawable.lm);
-            for(Product object : productsInCart)
-            {
-                if(object.getId_kod_kreskowy() == tmp.getId_kod_kreskowy())
-                {
-                    object.dodano_do_koszyka();
-                    exists=true;
-                    break;
-                }
-            }
-            if(!exists)
-            {
-                tmp.dodano_do_koszyka();
-                productsInCart.add(tmp);
+
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            if (extras.containsKey("cart")) {
+                productsInCart = (ArrayList<Product>) extras.getSerializable("cart");
             }
         }
+        else{
+            Product tmp = new Product("3333333333333", "fajki","lm", 15,100,"slodycze","Pychota",10,"1");
+            tmp.setImage(R.drawable.lm);
+            tmp.setIlosc_w_koszyku(6);
+            productsInCart.add(tmp);
+
+            Product tmp2 = new Product("1111111111111", "baton","snickers", 2.50F,60,"slodycze","takie dobre nawet",10,"1");
+            tmp2.setImage(R.drawable.lm);
+            tmp2.setIlosc_w_koszyku(4);
+            productsInCart.add(tmp2);
+
+            Product tmp3 = new Product("2222222222222", "gazeta","poranny", 1.90F,90,"papiernicze","newsy mocno",50,"1");
+            tmp3.setImage(R.drawable.lm);
+            tmp3.setIlosc_w_koszyku(2);
+            productsInCart.add(tmp3);
+        }
+
         mShopIdTextView = findViewById(R.id.shopIdTextView);
         mBackButton = findViewById(R.id.back_button);
 
         scanFragment = new ScanFragment();
         setListener(scanFragment);
         getSupportFragmentManager().beginTransaction().add(R.id.scanFragmentContainerScanActivity, scanFragment).commitNow();
-        hideScanFrangment();
+        hideScanFragment();
 
         mAddToCartButton = findViewById(R.id.add_to_cart_button);
 
@@ -78,7 +83,10 @@ public class ScanActivity extends AppCompatActivity {
         mScanButton.setVisibility(View.VISIBLE);
         mScanButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Bundle extras = new Bundle();
+                extras.putSerializable("cart", productsInCart);
                 Intent intent = new Intent(ScanActivity.this, BarcodeCaptureActivity.class);
+                intent.putExtras(extras);
                 intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
                 intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
                 startActivityForResult(intent, RC_BARCODE_CAPTURE);
@@ -90,7 +98,6 @@ public class ScanActivity extends AppCompatActivity {
         mCartButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Bundle extras = new Bundle();
-                //      extras.putSerializable("objects", scannedProductList);
                 extras.putSerializable("cart", productsInCart);
                 Intent intent = new Intent(ScanActivity.this, CartActivity.class);
                 intent.putExtras(extras);
@@ -98,21 +105,14 @@ public class ScanActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-//        fragmentButton = findViewById(R.id.fragment);
-//        fragmentButton.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                //showHide();
-//
-//            }});
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RC_BARCODE_CAPTURE) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
                     Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
-                    //Toast.makeText(getApplicationContext(), barcode.rawValue, Toast.LENGTH_SHORT).show();
                     queryProduct(barcode.rawValue);
                 }
             } else {
@@ -164,18 +164,18 @@ public class ScanActivity extends AppCompatActivity {
                                  //Toast.makeText(getApplicationContext(), new StringBuilder(newProduct.optString("NAZWA")), Toast.LENGTH_SHORT).show();
                                 //addToCart(newProduct);
                                 boolean exists = false;
+
                                 mCartButton.setVisibility(View.INVISIBLE);
                                 mScanButton.setVisibility(View.INVISIBLE);
+
                                 mAddToCartButton.setVisibility(View.VISIBLE);
                                 mBackButton.setVisibility(View.VISIBLE);
+
                                 for(final Product product : productsInCart)
                                 {
                                     if(product.getId_kod_kreskowy().equals(newProduct.optString("ID_KOD_KRESKOWY")))
                                     {
-                                        showScanFrangment();
-                                        //   listener.onUpdateView(args);
-                                        ///   productsInCart.add(scannedProduct);
-
+                                        showScanFragment();
 
                                         Bundle args = new Bundle();
                                         Log.i("produkt do frag: ", product.getNazwa());
@@ -189,7 +189,7 @@ public class ScanActivity extends AppCompatActivity {
                                             public void onClick(View view) {
                                                 product.dodano_do_koszyka();
                                                 Toast.makeText(getApplicationContext(), new StringBuilder("Dodano produkt ").append(productsInCart.get(productsInCart.size()-1).getNazwa()).append("!"), Toast.LENGTH_SHORT).show();
-                                                hideScanFrangment();
+                                                hideScanFragment();
                                                 hideFragment();
                                             }
                                         });
@@ -198,7 +198,7 @@ public class ScanActivity extends AppCompatActivity {
                                         mBackButton.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
-                                                hideScanFrangment();
+                                                hideScanFragment();
                                                 hideFragment();
                                             }
                                         });
@@ -232,14 +232,14 @@ public class ScanActivity extends AppCompatActivity {
                                     args.putString("opis",scannedProduct.getOpis());
 
 
-                                    showScanFrangment();
+                                    showScanFragment();
 
                                     mAddToCartButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
                                             addProduct(scannedProduct);
                                             Toast.makeText(getApplicationContext(), new StringBuilder("Dodano produkt ").append(productsInCart.get(productsInCart.size()-1).getNazwa()).append("!"), Toast.LENGTH_SHORT).show();
-                                            hideScanFrangment();
+                                            hideScanFragment();
                                             hideFragment();
                                         }
                                     });
@@ -248,14 +248,13 @@ public class ScanActivity extends AppCompatActivity {
                                     mBackButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
-                                            hideScanFrangment();
+                                            hideScanFragment();
                                             hideFragment();
                                         }
                                     });
                                     scanFragment.setArguments(args);
                                     listener.onUpdateView(args);
 
-                                   // Toast.makeText(getApplicationContext(), new StringBuilder("Dodano produkt ").append(productsInCart.get(productsInCart.size()-1).getNazwa()).append("!"), Toast.LENGTH_SHORT).show();
                                     Log.d("queryProduct", productsInCart.get(productsInCart.size()-1).getNazwa());
                                     Log.d("queryProduct", productsInCart.get(productsInCart.size()-1).getOpis());}
 
@@ -275,7 +274,6 @@ public class ScanActivity extends AppCompatActivity {
                             intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
                             intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
                             startActivityForResult(intent, RC_BARCODE_CAPTURE);
-                           // Toast.makeText(getApplicationContext(), "Error: " + statusCode + " " + throwable.getMessage(), Toast.LENGTH_LONG).show();
                             Log.e("queryProduct", statusCode + " " + throwable.getMessage());
                         }
                     });
@@ -298,7 +296,7 @@ public class ScanActivity extends AppCompatActivity {
             startActivity(intent);
         }
         else {
-            hideScanFrangment();
+            hideScanFragment();
             hideFragment();
         }
     }
@@ -306,9 +304,11 @@ public class ScanActivity extends AppCompatActivity {
     public void hideFragment (){
         mScanButton.setVisibility(View.VISIBLE);
         mCartButton.setVisibility(View.VISIBLE);
+
         mAddToCartButton.setVisibility(View.INVISIBLE);
         mBackButton.setVisibility(View.INVISIBLE);
     }
+
     public interface OnUpdateViewListener{
         public void onUpdateView(Bundle bundle);
 
@@ -320,18 +320,22 @@ public class ScanActivity extends AppCompatActivity {
         this.listener = listener;
     }
 
-    public void showScanFrangment(){
+    public void showScanFragment(){
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .show(scanFragment)
                 .commit();
+
     }
 
-    public void hideScanFrangment(){
+    public void hideScanFragment(){
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .hide(scanFragment)
                 .commit();
+
     }
 
 }

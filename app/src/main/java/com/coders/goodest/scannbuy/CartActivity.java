@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.coders.goodest.scannbuy.fragments.ScanFragment;
 import com.coders.goodest.scannbuy.models.Product;
@@ -25,6 +27,14 @@ public class CartActivity extends AppCompatActivity {
     TextView mSummaryTextView;
     ScanFragment scanFragment;
 
+    Button buttonPlus;
+    Button buttonMinus;
+    Button buttonDelete;
+    TextView productQuantity;
+    TextView productQuantityTextView;
+
+    int quantityOfProduct;
+    int currentPositionInCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +46,7 @@ public class CartActivity extends AppCompatActivity {
         scanFragment = new ScanFragment();
         setListener(scanFragment);
         getSupportFragmentManager().beginTransaction().add(R.id.scanFragmentContainer, scanFragment).commitNow();
-        hideScanFrangment();
-
+        hideScanFragment();
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -50,15 +59,23 @@ public class CartActivity extends AppCompatActivity {
         else {
             productsInCart = (ArrayList<Product>) savedInstanceState.getSerializable("cart");
         }
+
+        mSummaryTextView = findViewById(R.id.cartSummary);
         float toPay=0;
         for(Product object : productsInCart)
         {
             toPay+= object.getCena()*object.getIlosc_w_koszyku();
         }
-        mSummaryTextView = findViewById(R.id.cartSummary);
         mSummaryTextView.setText("Total: "+Float.toString(toPay)+"zł");
-        ProductAdapter productAdapter = new ProductAdapter(this, R.layout.product_cart_row_with_image, productsInCart);
+
+        final ProductAdapter productAdapter = new ProductAdapter(this, R.layout.product_cart_row_with_image, productsInCart);
         mCartProductsListView.setAdapter(productAdapter);
+
+        buttonPlus = findViewById(R.id.button_plus_cart);
+        buttonMinus = findViewById(R.id.button_minus_cart);
+        buttonDelete = findViewById(R.id.button_delete_cart);
+        productQuantity = findViewById(R.id.product_quantity_cart);
+        productQuantityTextView = findViewById(R.id.product_quantity_TextView_cart);
 
         mCartProductsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -70,40 +87,111 @@ public class CartActivity extends AppCompatActivity {
                 args.putString("nazwa",productsInCart.get(position).getNazwa());
                 args.putString("opis",productsInCart.get(position).getOpis());
                 args.putString("id", productsInCart.get(position).getId_kod_kreskowy());
-                showScanFrangment();
+
+                currentPositionInCart = position;
+
+                quantityOfProduct = productsInCart.get(position).getIlosc_w_koszyku();
+                productQuantity.setText(quantityOfProduct+"");
+
+                buttonDelete.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        productsInCart.remove(currentPositionInCart);
+                        mCartProductsListView.invalidateViews();
+                        onBackPressed();
+
+                        float toPay=0;
+                        for(Product object : productsInCart)
+                        {
+                            toPay+= object.getCena()*object.getIlosc_w_koszyku();
+                        }
+                        mSummaryTextView.setText("Total: "+Float.toString(toPay)+"zł");
+                    }
+                });
+
+                buttonPlus.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        quantityOfProduct++;
+
+                        if(quantityOfProduct > productsInCart.get(currentPositionInCart).getIlosc_na_stanie()){
+                            quantityOfProduct--;
+                            Toast.makeText(getApplicationContext(), new StringBuilder("Na stanie znajduje sie ").append(productsInCart.get(currentPositionInCart).getIlosc_na_stanie()).append(" produktow."), Toast.LENGTH_SHORT).show();
+                        }
+
+                        productQuantity.setText(quantityOfProduct+"");
+                        productsInCart.get(currentPositionInCart).setIlosc_w_koszyku(quantityOfProduct);
+                        mCartProductsListView.invalidateViews();
+
+                        float toPay=0;
+                        for(Product object : productsInCart)
+                        {
+                            toPay+= object.getCena()*object.getIlosc_w_koszyku();
+                        }
+                        mSummaryTextView.setText("Total: "+Float.toString(toPay)+"zł");
+                    }
+                });
+
+                buttonMinus.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        quantityOfProduct--;
+
+                        if(quantityOfProduct < 1)
+                            quantityOfProduct++;
+
+                        productQuantity.setText(quantityOfProduct+"");
+                        productsInCart.get(currentPositionInCart).setIlosc_w_koszyku(quantityOfProduct);
+                        mCartProductsListView.invalidateViews();
+
+                        float toPay=0;
+                        for(Product object : productsInCart)
+                        {
+                            toPay+= object.getCena()*object.getIlosc_w_koszyku();
+                        }
+                        mSummaryTextView.setText("Total: "+Float.toString(toPay)+"zł");
+                    }
+                });
+
+                showScanFragment();
                 listener.onUpdateView(args);
             }
         });
     }
 
-    public void showScanFrangment(){
+    public void showScanFragment(){
+
+        mCartProductsListView.setVisibility(View.INVISIBLE);
+        mSummaryTextView.setVisibility(View.INVISIBLE);
+
+        buttonMinus.setVisibility(View.VISIBLE);
+        buttonPlus.setVisibility(View.VISIBLE);
+        buttonDelete.setVisibility(View.VISIBLE);
+        productQuantity.setVisibility(View.VISIBLE);
+        productQuantityTextView.setVisibility(View.VISIBLE);
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .show(scanFragment)
                 .commit();
-        mCartProductsListView.setVisibility(View.INVISIBLE);
-        mSummaryTextView.setVisibility(View.INVISIBLE);
     }
 
-    public void hideScanFrangment(){
+    public void hideScanFragment(){
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .hide(scanFragment)
                 .commit();
-        // mCartProductsListView.setVisibility(View.INVISIBLE);
-        //mSummaryTextView.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onBackPressed(){
         if (scanFragment.isHidden()){
             Intent intent = new Intent(CartActivity.this, ScanActivity.class);
+            Bundle extras = new Bundle();
+            extras.putSerializable("cart", productsInCart);
+            intent.putExtras(extras);
             intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
-         //   finish();
         }
         else {
-            hideScanFrangment();
+            hideScanFragment();
             hideFragment();
         }
     }
@@ -111,6 +199,12 @@ public class CartActivity extends AppCompatActivity {
     public void hideFragment (){
         mCartProductsListView.setVisibility(View.VISIBLE);
         mSummaryTextView.setVisibility(View.VISIBLE);
+
+        buttonMinus.setVisibility(View.INVISIBLE);
+        buttonPlus.setVisibility(View.INVISIBLE);
+        buttonDelete.setVisibility(View.INVISIBLE);
+        productQuantity.setVisibility(View.INVISIBLE);
+        productQuantityTextView.setVisibility(View.INVISIBLE);
     }
 
     public interface OnUpdateViewListener{

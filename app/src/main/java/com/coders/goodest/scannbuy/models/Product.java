@@ -39,6 +39,10 @@ public class Product implements Serializable{
 
     public int getIlosc_w_koszyku(){return ilosc_w_koszyku;}
 
+    public void setIlosc_w_koszyku(int ilosc_w_koszyku) {
+        this.ilosc_w_koszyku = ilosc_w_koszyku;
+    }
+
     public void dodano_do_koszyka(){ilosc_w_koszyku++;}
 
     public int getImage(){return ImageID;}

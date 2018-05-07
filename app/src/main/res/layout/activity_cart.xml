@@ -27,6 +27,54 @@
         android:listSelector="@android:color/transparent"
         android:layout_height="461dp"></ListView>
 
+    <Button
+        android:id="@+id/button_plus_cart"
+        android:visibility="invisible"
+        android:text="+"
+        android:gravity="center"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/button_minus_cart"
+        android:visibility="invisible"
+        android:text="-"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toLeftOf="@id/button_plus_cart"/>
+
+    <TextView
+        android:id="@+id/product_quantity_TextView_cart"
+        android:visibility="invisible"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Quantity:"
+        android:textSize="40px"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/button_plus_cart"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/product_quantity_cart"
+        android:visibility="invisible"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:textSize="40px"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/product_quantity_TextView_cart"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/button_delete_cart"
+        android:visibility="invisible"
+        android:text="DELETE"
+        android:gravity="center"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/product_quantity_cart"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <TextView
         android:id="@+id/cartSummary"
         android:layout_width="match_parent"
