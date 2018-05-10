@@ -3,7 +3,7 @@ package com.coders.goodest.scannbuy.models;
 import java.io.Serializable;
 
 public class Product implements Serializable{
-    // dałem nazwy parametrów takie jak w bazie, żeby nie komplikować
+
     private String id_kod_kreskowy;
     private String nazwa;
     private String producent;

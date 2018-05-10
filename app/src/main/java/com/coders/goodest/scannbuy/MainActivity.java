@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -77,21 +78,17 @@ public class MainActivity extends AppCompatActivity {
 
 
             @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-
-            }
+            public void onStatusChanged(String s, int i, Bundle bundle) { }
 
             @Override
-            public void onProviderEnabled(String s) {
-
-            }
+            public void onProviderEnabled(String s) { }
 
             @Override
             public void onProviderDisabled(String s) {
-
                 Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(i);
             }
+
         };
 
 
@@ -200,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
+
     }
 
     void configure_button() {
@@ -256,7 +254,9 @@ public class MainActivity extends AppCompatActivity {
         // Have the client get a JSONArray of data
         // and define how to respond
         Log.d("WEBSERVICE","calling: " + urlStringBuilder.toString());
-        try{
+
+        try {
+
             client.get(urlStringBuilder.toString(),
                     new JsonHttpResponseHandler() {
 
@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.e("omg android", statusCode + " " + throwable.getMessage());
                         }
                     });
-        }catch (Exception e) {
+        } catch (Exception e) {
             Log.e("WS", "ERROR: ", e);
         }
 

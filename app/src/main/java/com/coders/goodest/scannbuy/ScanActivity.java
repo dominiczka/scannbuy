@@ -1,5 +1,6 @@
 package com.coders.goodest.scannbuy;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -33,41 +34,35 @@ public class ScanActivity extends AppCompatActivity {
     Button mAddToCartButton;
     Button mBackButton;
     ScanFragment scanFragment;
-    private static final int RC_BARCODE_CAPTURE = 9001; //czy to jest potrzebne?
 
     ArrayList<Product> productsInCart;
+
+    private static final int RC_BARCODE_CAPTURE = 9001;
+    private static final int RC_CART_ACTIVITY = 9000;
     private static final String PRODUCT_QUERY_URL = "http://scanandbuy.000webhostapp.com/api/get.php?id=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
 
         productsInCart = new ArrayList<Product>();
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            if (extras.containsKey("cart")) {
-                productsInCart = (ArrayList<Product>) extras.getSerializable("cart");
-            }
-        }
-        else{
-            Product tmp = new Product("3333333333333", "fajki","lm", 15,100,"slodycze","Pychota",10,"1");
-            tmp.setImage(R.drawable.lm);
-            tmp.setIlosc_w_koszyku(6);
-            productsInCart.add(tmp);
+        Product tmp = new Product("3333333333333", "fajki","lm", 15,100,"slodycze","Pychota",10,"1");
+        tmp.setImage(R.drawable.lm);
+        tmp.setIlosc_w_koszyku(6);
+        productsInCart.add(tmp);
 
-            Product tmp2 = new Product("1111111111111", "baton","snickers", 2.50F,60,"slodycze","takie dobre nawet",10,"1");
-            tmp2.setImage(R.drawable.lm);
-            tmp2.setIlosc_w_koszyku(4);
-            productsInCart.add(tmp2);
+        Product tmp2 = new Product("1111111111111", "baton","snickers", 2.50F,60,"slodycze","takie dobre nawet",10,"1");
+        tmp2.setImage(R.drawable.lm);
+        tmp2.setIlosc_w_koszyku(4);
+        productsInCart.add(tmp2);
 
-            Product tmp3 = new Product("2222222222222", "gazeta","poranny", 1.90F,90,"papiernicze","newsy mocno",50,"1");
-            tmp3.setImage(R.drawable.lm);
-            tmp3.setIlosc_w_koszyku(2);
-            productsInCart.add(tmp3);
-        }
+        Product tmp3 = new Product("2222222222222", "gazeta","poranny", 1.90F,90,"papiernicze","newsy mocno",50,"1");
+        tmp3.setImage(R.drawable.lm);
+        tmp3.setIlosc_w_koszyku(2);
+        productsInCart.add(tmp3);
 
         mShopIdTextView = findViewById(R.id.shopIdTextView);
         mBackButton = findViewById(R.id.back_button);
@@ -101,8 +96,7 @@ public class ScanActivity extends AppCompatActivity {
                 extras.putSerializable("cart", productsInCart);
                 Intent intent = new Intent(ScanActivity.this, CartActivity.class);
                 intent.putExtras(extras);
-                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
-                startActivity(intent);
+                startActivityForResult(intent, RC_CART_ACTIVITY);
             }
         });
     }
@@ -118,6 +112,9 @@ public class ScanActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(getApplicationContext(), getString(R.string.barcode_error), Toast.LENGTH_LONG).show();
             }
+        }
+        else if (requestCode == RC_CART_ACTIVITY){
+            productsInCart = (ArrayList<Product>) data.getExtras().getSerializable("cart");
         }
         else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -178,7 +175,7 @@ public class ScanActivity extends AppCompatActivity {
                                         showScanFragment();
 
                                         Bundle args = new Bundle();
-                                        Log.i("produkt do frag: ", product.getNazwa());
+                                        Log.i("produkt do frag", product.getNazwa());
                                         args.putString("id", product.getId_kod_kreskowy());
                                         args.putFloat("cena", product.getCena());
                                         args.putString("nazwa",product.getNazwa());
@@ -209,6 +206,7 @@ public class ScanActivity extends AppCompatActivity {
                                         break;
                                     }
                                 }
+
                                 if(!exists){
                                     final Product scannedProduct = new Product(
                                             newProduct.optString("ID_KOD_KRESKOWY"),
@@ -221,16 +219,12 @@ public class ScanActivity extends AppCompatActivity {
                                             Integer.parseInt(newProduct.optString("ILOSC_NA_STANIE")),
                                             newProduct.optString("ID_SKLEPU"));
 
-
-
-
                                     Bundle args = new Bundle();
-                                    Log.i("produkt do frag: ", scannedProduct.getNazwa());
+                                    Log.i("produkt do frag", scannedProduct.getNazwa());
                                     args.putString("id", scannedProduct.getId_kod_kreskowy());
                                     args.putFloat("cena", scannedProduct.getCena());
                                     args.putString("nazwa",scannedProduct.getNazwa());
                                     args.putString("opis",scannedProduct.getOpis());
-
 
                                     showScanFragment();
 
@@ -252,12 +246,13 @@ public class ScanActivity extends AppCompatActivity {
                                             hideFragment();
                                         }
                                     });
+
                                     scanFragment.setArguments(args);
                                     listener.onUpdateView(args);
 
                                     Log.d("queryProduct", productsInCart.get(productsInCart.size()-1).getNazwa());
-                                    Log.d("queryProduct", productsInCart.get(productsInCart.size()-1).getOpis());}
-
+                                    Log.d("queryProduct", productsInCart.get(productsInCart.size()-1).getOpis());
+                                }
                             } catch (JSONException e) {
                                 Intent intent = new Intent(ScanActivity.this, BarcodeCaptureActivity.class);
                                 intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
@@ -268,6 +263,7 @@ public class ScanActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
+
                         @Override
                         public void onFailure(int statusCode, Throwable throwable, JSONArray error) {
                             Intent intent = new Intent(ScanActivity.this, BarcodeCaptureActivity.class);
@@ -286,7 +282,6 @@ public class ScanActivity extends AppCompatActivity {
         product.dodano_do_koszyka();
         productsInCart.add(product);
     }
-
 
     @Override
     public void onBackPressed(){
@@ -311,7 +306,6 @@ public class ScanActivity extends AppCompatActivity {
 
     public interface OnUpdateViewListener{
         public void onUpdateView(Bundle bundle);
-
     }
 
     private CartActivity.OnUpdateViewListener listener;

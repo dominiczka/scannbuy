@@ -28,7 +28,6 @@ import com.coders.goodest.scannbuy.R;
 import com.coders.goodest.scannbuy.camera.CameraSource;
 import com.coders.goodest.scannbuy.camera.CameraSourcePreview;
 import com.coders.goodest.scannbuy.camera.GraphicOverlay;
-import com.coders.goodest.scannbuy.models.Product;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -69,8 +68,6 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
 
     ArrayList<Barcode> barcodes;
 
-    ArrayList<Product> productsInCart;
-
     /**
      * Initializes the UI and creates the detector pipeline.
      */
@@ -79,14 +76,6 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
         super.onCreate(icicle);
         setContentView(R.layout.barcode_capture);
         barcodes = new ArrayList<Barcode>();
-
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            if (extras.containsKey("cart")) {
-                productsInCart = (ArrayList<Product>) extras.getSerializable("cart");
-            }
-        }
 
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
@@ -358,12 +347,8 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
         }
 
         if (best != null) {
-            Log.i("barcode ilosc onTap", productsInCart.get(0).getIlosc_w_koszyku()+"");
-            Bundle extras = new Bundle();
-            extras.putSerializable("cart", productsInCart);
             Intent data = new Intent();
             data.putExtra(BarcodeObject, best);
-            data.putExtras(extras);
             setResult(CommonStatusCodes.SUCCESS, data);
             finish();
             return true;
@@ -456,15 +441,11 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
     }
 
     public void onBarcodeChecked(Barcode barcode){
-
-        Log.i("barcode ilosc Checked", productsInCart.get(0).getIlosc_w_koszyku()+"");
-        Bundle extras = new Bundle();
-        extras.putSerializable("cart", productsInCart);
         Intent mIntent = new Intent();
         mIntent.putExtra(BarcodeObject, barcode);
-        mIntent.putExtras(extras);
         setResult(CommonStatusCodes.SUCCESS, mIntent);
         finish();
     }
 
 }
+
