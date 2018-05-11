@@ -39,13 +39,6 @@ public class MainActivity extends AppCompatActivity {
     Button getshopAsyncBtn;
     Location loc;
     TextView coordinatesTV;
-    // ArrayList<String> shopList;
-    // String name;
-    // Double lokalizacjaX, lokalizacjaY;
-    //  String currentShop;
-
-    // private static final String TAG = "BarcodeMain";
-    // private static final int RC_BARCODE_CAPTURE = 9001;
 
 
     @Override
@@ -54,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Acquire a reference to the system Location Manager
         mLocationButton = findViewById(R.id.button2);
         coordinatesTV = findViewById(R.id.coordinatesTV);
         getshopAsyncBtn = findViewById(R.id.getshopAsyncBtn);
@@ -69,11 +61,9 @@ public class MainActivity extends AppCompatActivity {
                         "longitude" + location.getLongitude());
                 Log.d("LOCATION",
                         "latitude" + location.getLatitude());
-                //zapraszam do logcata po lokalizacje :)
                 int shop;
                 loc = location;
                 coordinatesTV.setText("lat: " + location.getLatitude() + " | lon: " + location.getLongitude());
-//                queryShop(String.valueOf(location.getLongitude()),String.valueOf(location.getLatitude()));
             }
 
 
@@ -94,9 +84,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Added the condition needed to display the coordinates to the location in android <6
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                // taki sam if jest w metodzie onResume(), jeśli zmienimy coś tu, tam tez by wypadało
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
@@ -110,14 +99,10 @@ public class MainActivity extends AppCompatActivity {
             configure_button();
         }
 
-
-
-
         getshopAsyncBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 queryShop("69","99");
-                //queryShop(String.valueOf(loc.getLongitude()),String.valueOf(loc.getLatitude()));
             }
         });
 
@@ -126,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
         buttonStartShopping.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-             //   intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
                 finish();
             }
@@ -149,9 +133,8 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                // taki sam if jest w metodzie onResume(), jeśli zmienimy coś tu, tam tez by wypadało
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
@@ -165,19 +148,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -201,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void configure_button() {
-        // first check for permissions
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -212,47 +191,26 @@ public class MainActivity extends AppCompatActivity {
             }
             return;
         }
-        // this code won'textView execute IF permissions are not allowed, because in the line above there is return statement.
+
         mLocationButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("MissingPermission")
             @Override
             public void onClick(View view) {
-                //noinspection MissingPermission
                 locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
                 Log.i("LOCATION","Your location: " + loc);
             }
         });
     }
-    /*
-        public void findCurrentLocation(Location location){
-            for(String nazwa: shopList){
-                if(location.getLongitude()== lokalizacjaY && location.getLatitude()==lokalizacjaX){
-                    currentShop=nazwa;
-                }}
-        }
-    */
+
     private void queryShop(String lattitude, String longitude) {
 
-        // Prepare your search string to be put in a URL
-        // It might have reserved characters or something
         String urlString = "";
-//        try {
         StringBuilder urlStringBuilder = new StringBuilder();
         urlStringBuilder.append(QUERY_URL).append("?x=").append(lattitude).append("&y=").append(longitude);
-        //urlString = URLEncoder.encode(urlStringBuilder.toString(), "UTF-8");
-        Log.d("LOCATION","urlString = " + urlString + " | builder = " + urlStringBuilder.toString());
-//        } catch (UnsupportedEncodingException e) {
-//
-//            // if this fails for some reason, let the user know why
-//            e.printStackTrace();
-//            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-//        }
 
-        // Create a client to perform networking
+        Log.d("LOCATION","urlString = " + urlString + " | builder = " + urlStringBuilder.toString());
         AsyncHttpClient client = new AsyncHttpClient();
 
-        // Have the client get a JSONArray of data
-        // and define how to respond
         Log.d("WEBSERVICE","calling: " + urlStringBuilder.toString());
 
         try {
@@ -265,7 +223,6 @@ public class MainActivity extends AppCompatActivity {
                             if (null == responseBody)
                                 return null;
                             Object result = null;
-                            //trim the string to prevent start with blank, and test if the string is valid JSON, because the parser don't do this :(. If Json is not valid this will return null
                             String jsonString = responseBody.trim();
                             if (jsonString.startsWith("{") || jsonString.startsWith("[")) {
                                 result = new JSONTokener(jsonString).nextValue();
@@ -281,20 +238,11 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(JSONArray jsonObject) {
                             Toast.makeText(getApplicationContext(), jsonObject.toString(), Toast.LENGTH_LONG).show();
-
-                            // 8. For now, just log results
-                            Log.d("omg android", jsonObject.toString());
                         }
 
                         @Override
                         public void onFailure(int statusCode, Throwable throwable, JSONArray error) {
-                            // Display a "Toast" message
-                            // to announce the failure
                             Toast.makeText(getApplicationContext(), "Error: " + statusCode + " " + throwable.getMessage(), Toast.LENGTH_LONG).show();
-
-                            // Log error message
-                            // to help solve any problems
-                            Log.e("omg android", statusCode + " " + throwable.getMessage());
                         }
                     });
         } catch (Exception e) {

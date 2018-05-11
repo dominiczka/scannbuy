@@ -17,23 +17,20 @@ import com.coders.goodest.scannbuy.fragments.ScanFragment;
 import com.coders.goodest.scannbuy.models.Product;
 import com.coders.goodest.scannbuy.models.ProductAdapter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
 
-    Button buttonPlus;
-    Button buttonMinus;
-    Button buttonDelete;
-    TextView productQuantity;
-    TextView productQuantityTextView;
     ListView mCartProductsListView;
     TextView mSummaryTextView;
     ScanFragment scanFragment;
 
-    ArrayList<Product> productsInCart;
+    ProductAdapter productAdapter;
 
-    int quantityOfProduct;
-    int currentPositionInCart;
+    ArrayList<Product> productsInCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,16 +59,11 @@ public class CartActivity extends AppCompatActivity {
         mSummaryTextView = findViewById(R.id.cartSummary);
         calculateSumToPay();
 
-        final ProductAdapter productAdapter = new ProductAdapter(this, R.layout.product_cart_row_with_image, productsInCart);
+        productAdapter = new ProductAdapter(this, R.layout.product_cart_row_with_image, productsInCart);
         mCartProductsListView.setAdapter(productAdapter);
 
-        buttonPlus = findViewById(R.id.button_plus_cart);
-        buttonMinus = findViewById(R.id.button_minus_cart);
-        buttonDelete = findViewById(R.id.button_delete_cart);
-        productQuantity = findViewById(R.id.product_quantity_cart);
-        productQuantityTextView = findViewById(R.id.product_quantity_TextView_cart);
-
         mCartProductsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -81,60 +73,15 @@ public class CartActivity extends AppCompatActivity {
                 args.putString("nazwa",productsInCart.get(position).getNazwa());
                 args.putString("opis",productsInCart.get(position).getOpis());
                 args.putString("id", productsInCart.get(position).getId_kod_kreskowy());
+                args.putString("iloscKoszyk", productsInCart.get(position).getIlosc_w_koszyku()+"");
+                args.putInt("iloscStan", productsInCart.get(position).getIlosc_na_stanie());
 
-                currentPositionInCart = position;
-
-                quantityOfProduct = productsInCart.get(position).getIlosc_w_koszyku();
-                productQuantity.setText(quantityOfProduct + "");
-
-                buttonDelete.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-
-                        productsInCart.remove(currentPositionInCart);
-                        productAdapter.notifyDataSetChanged();
-                        onBackPressed();
-
-                        calculateSumToPay();
-                    }
-                });
-
-                buttonPlus.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-
-                        quantityOfProduct++;
-
-                        if(quantityOfProduct > productsInCart.get(currentPositionInCart).getIlosc_na_stanie()){
-                            quantityOfProduct--;
-                            Toast.makeText(getApplicationContext(), new StringBuilder("Na stanie znajduje sie ").append(productsInCart.get(currentPositionInCart).getIlosc_na_stanie()).append(" produktow."), Toast.LENGTH_SHORT).show();
-                        }
-
-                        productQuantity.setText(quantityOfProduct + "");
-                        productsInCart.get(currentPositionInCart).setIlosc_w_koszyku(quantityOfProduct);
-                        productAdapter.notifyDataSetChanged();
-
-                        calculateSumToPay();
-                    }
-                });
-
-                buttonMinus.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-
-                        quantityOfProduct--;
-
-                        if(quantityOfProduct < 1)
-                            quantityOfProduct++;
-
-                        productQuantity.setText(quantityOfProduct + "");
-                        productsInCart.get(currentPositionInCart).setIlosc_w_koszyku(quantityOfProduct);
-                        productAdapter.notifyDataSetChanged();
-
-                        calculateSumToPay();
-                    }
-                });
+                args.putString("entryPoint", "cartList");
 
                 showScanFragment();
                 listener.onUpdateView(args);
             }
+
         });
     }
 
@@ -147,7 +94,9 @@ public class CartActivity extends AppCompatActivity {
             toPay += object.getCena() * object.getIlosc_w_koszyku();
         }
 
-        mSummaryTextView.setText("Total: " + Float.toString(toPay) + "zł");
+        toPay = round(toPay, 2);
+
+        mSummaryTextView.setText("Total: " + Float.toString(toPay) + " zł");
 
     }
 
@@ -155,12 +104,6 @@ public class CartActivity extends AppCompatActivity {
 
         mCartProductsListView.setVisibility(View.INVISIBLE);
         mSummaryTextView.setVisibility(View.INVISIBLE);
-
-        buttonMinus.setVisibility(View.VISIBLE);
-        buttonPlus.setVisibility(View.VISIBLE);
-        buttonDelete.setVisibility(View.VISIBLE);
-        productQuantity.setVisibility(View.VISIBLE);
-        productQuantityTextView.setVisibility(View.VISIBLE);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -201,21 +144,56 @@ public class CartActivity extends AppCompatActivity {
         mCartProductsListView.setVisibility(View.VISIBLE);
         mSummaryTextView.setVisibility(View.VISIBLE);
 
-        buttonMinus.setVisibility(View.INVISIBLE);
-        buttonPlus.setVisibility(View.INVISIBLE);
-        buttonDelete.setVisibility(View.INVISIBLE);
-        productQuantity.setVisibility(View.INVISIBLE);
-        productQuantityTextView.setVisibility(View.INVISIBLE);
-
     }
 
     private OnUpdateViewListener listener;
 
     public interface OnUpdateViewListener{
+
         public void onUpdateView(Bundle bundle);
+
     }
 
     public void setListener(OnUpdateViewListener listener) {
         this.listener = listener;
     }
+
+    public void deleteProductFromCart(String productId){
+
+        onBackPressed();
+
+        List<Object> toRemove = new ArrayList<Object>();
+        for(Product product : productsInCart){
+            if(product.getId_kod_kreskowy().equals(productId)){
+                toRemove.add(product);
+            }
+        }
+        productsInCart.removeAll(toRemove);
+
+        calculateSumToPay();
+
+        productAdapter.notifyDataSetChanged();
+
+    }
+
+    public void changeProductQuantity(String productId, int quantityNew){
+
+        for(Product product : productsInCart){
+            if(product.getId_kod_kreskowy().equals(productId)){
+                product.setIlosc_w_koszyku(quantityNew);
+            }
+        }
+
+        calculateSumToPay();
+
+        productAdapter.notifyDataSetChanged();
+
+    }
+
+    public static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
+
 }

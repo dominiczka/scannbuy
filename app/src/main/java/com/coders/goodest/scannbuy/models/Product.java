@@ -26,7 +26,7 @@ public class Product implements Serializable{
         this.opis = opis;
         this.ilosc_na_stanie = ilosc_na_stanie;
         this.id_sklepu = id_sklepu;
-        this.ilosc_w_koszyku=0;
+        this.ilosc_w_koszyku = 1;
     }
 
     public String getId_kod_kreskowy() {

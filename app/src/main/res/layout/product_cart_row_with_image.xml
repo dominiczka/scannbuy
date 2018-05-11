@@ -22,7 +22,7 @@
         android:layout_height="20dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        tools:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/image"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,7 +32,7 @@
         android:layout_height="20dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="4dp"
-        android:text="TextView"
+        tools:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/image"
         app:layout_constraintTop_toBottomOf="@+id/productName" />
 
@@ -42,34 +42,31 @@
         android:layout_height="20dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="4dp"
-        android:text="TextView"
+        tools:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/image"
         app:layout_constraintTop_toBottomOf="@+id/productPrice" />
 
     <TextView
         android:id="@+id/productQuantity"
-        android:layout_width="64dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        android:paddingTop="23dp"
-        android:paddingLeft="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/productPrice"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/productOverallPrice"
-        android:layout_width="65dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="TextView"
+        tools:text="TextView"
+        app:layout_goneMarginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/productDescription"
-        app:layout_constraintTop_toBottomOf="@+id/productQuantity" />
+        app:layout_constraintTop_toTopOf="@+id/productPrice" />
+
+    <TextView
+        android:id="@+id/productOverallPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        tools:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintTop_toBottomOf="@id/productQuantity"/>
 </android.support.constraint.ConstraintLayout>

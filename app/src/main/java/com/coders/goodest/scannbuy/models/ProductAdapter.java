@@ -11,11 +11,8 @@ import android.widget.TextView;
 import com.coders.goodest.scannbuy.R;
 import com.squareup.picasso.Picasso;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
-
-/**
- * Created by Dominiczka on 15.01.2018.
- */
 
 public class ProductAdapter extends ArrayAdapter<Product> {
     public static final String IMAGE_URL = "http://scanandbuy.000webhostapp.com/products/photos/";
@@ -36,7 +33,6 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         if (view == null) {
             LayoutInflater layoutInflater;
             layoutInflater = LayoutInflater.from(getContext());
-            //view = layoutInflater.inflate(R.layout.product_cart_row, null);
 
             view = layoutInflater.inflate(R.layout.product_cart_row_with_image, null);
         }
@@ -44,9 +40,6 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         Product product = getItem(position);
 
         if (product != null) {
-            /*TextView mProductNameTextView = view.findViewById(R.id.product_name_textView);
-            TextView mProductPriceTextView = view.findViewById(R.id.product_price_textView);
-            TextView mProductDescriptionTextView = view.findViewById(R.id.product_description_textView);*/
 
             TextView mProductNameTextView = view.findViewById(R.id.productName);
             TextView mProductPriceTextView = view.findViewById(R.id.productPrice);
@@ -55,7 +48,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
             TextView mProductOverallPrice = view.findViewById(R.id.productOverallPrice);
             ImageView mProductImage = view.findViewById(R.id.image);
 
-            mProductOverallPrice.setText(Float.toString(product.getCena()*product.getIlosc_w_koszyku())+"zł");
+            mProductOverallPrice.setText(Float.toString(round(product.getCena()*product.getIlosc_w_koszyku(),2))+" zł");
             String imageUrl = IMAGE_URL + product.getId_kod_kreskowy() + ".png";
             Picasso.with(getContext()).load(imageUrl).into(mProductImage);
             mProductNameTextView.setText(product.getNazwa());
@@ -64,5 +57,11 @@ public class ProductAdapter extends ArrayAdapter<Product> {
             mProductQuantityTextView.setText(Integer.toString(product.getIlosc_w_koszyku()));
         }
         return view;
+    }
+
+    public static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 }

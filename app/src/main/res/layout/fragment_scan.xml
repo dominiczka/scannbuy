@@ -7,49 +7,54 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/button_plus_placeholder"
-        android:visibility="invisible"
-        android:text="+"
+        android:id="@+id/button_plus_cart"
+        android:text="@string/plus"
         android:gravity="center"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
-        android:id="@+id/button_minus_placeholder"
-        android:visibility="invisible"
-        android:text="-"
+        android:id="@+id/button_minus_cart"
+        android:text="@string/minus"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        app:layout_constraintRight_toLeftOf="@id/button_plus_placeholder"/>
+        app:layout_constraintRight_toLeftOf="@id/button_plus_cart"/>
 
     <TextView
-        android:id="@+id/product_quantity_TextView_placeholder"
-        android:visibility="invisible"
+        android:id="@+id/product_quantity_TextView_cart"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Quantity:"
-        android:textSize="40px"
+        android:text="@string/quantity"
+        android:textSize="20sp"
         android:gravity="center_horizontal"
-        app:layout_constraintTop_toBottomOf="@id/button_plus_placeholder"
+        app:layout_constraintTop_toBottomOf="@id/button_plus_cart"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
-        android:id="@+id/product_quantity_placeholder"
-        android:visibility="invisible"
+        android:id="@+id/product_quantity_cart"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:textSize="40px"
+        android:textSize="20sp"
         android:gravity="center_horizontal"
-        app:layout_constraintTop_toBottomOf="@id/product_quantity_TextView_placeholder"
+        app:layout_constraintTop_toBottomOf="@id/product_quantity_TextView_cart"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/button_delete_cart"
+        android:text="@string/delete"
+        android:gravity="center"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/product_quantity_cart"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="300dp"
+        android:layout_width="280dp"
         android:layout_height="150dp"
-        android:contentDescription="fotka"
-        app:layout_constraintRight_toLeftOf="@id/button_minus_placeholder"
+        android:contentDescription="@string/photo"
+        app:layout_constraintRight_toLeftOf="@id/button_minus_cart"
         app:srcCompat="@drawable/common_google_signin_btn_icon_light_normal_background" />
 
     <TextView
@@ -58,8 +63,8 @@
         android:layout_height="33dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Product:"
-        android:textSize="40px"
+        android:text="@string/product"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"  />
 
@@ -70,7 +75,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:textAlignment="center"
-        android:textSize="35px"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -80,8 +85,8 @@
         android:layout_width="63dp"
         android:layout_height="33dp"
         android:layout_marginStart="8dp"
-        android:text="Price:"
-        android:textSize="40px"
+        android:text="@string/price"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/product" />
 
@@ -92,8 +97,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:textAlignment="center"
-
-        android:textSize="35px"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -103,8 +107,8 @@
         android:layout_width="93dp"
         android:layout_height="33dp"
         android:layout_marginStart="8dp"
-        android:text="Details:"
-        android:textSize="40px"
+        android:text="@string/details"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/price" />
 
@@ -115,7 +119,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:textAlignment="center"
-        android:textSize="35px"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/product_descriptionTV" />

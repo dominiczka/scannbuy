@@ -1,6 +1,5 @@
 package com.coders.goodest.scannbuy;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.math.BigDecimal;
 import java.util.List;
 import com.coders.goodest.scannbuy.barcode.BarcodeCaptureActivity;
 import com.coders.goodest.scannbuy.fragments.ScanFragment;
@@ -158,8 +159,6 @@ public class ScanActivity extends AppCompatActivity {
                                     startActivityForResult(intent, RC_BARCODE_CAPTURE);
                                     Toast.makeText(getApplicationContext(), new StringBuilder("Produktu nie ma w bazie."), Toast.LENGTH_SHORT).show();
                                 }
-                                 //Toast.makeText(getApplicationContext(), new StringBuilder(newProduct.optString("NAZWA")), Toast.LENGTH_SHORT).show();
-                                //addToCart(newProduct);
                                 boolean exists = false;
 
                                 mCartButton.setVisibility(View.INVISIBLE);
@@ -180,12 +179,17 @@ public class ScanActivity extends AppCompatActivity {
                                         args.putFloat("cena", product.getCena());
                                         args.putString("nazwa",product.getNazwa());
                                         args.putString("opis",product.getOpis());
+                                        args.putString("iloscKoszyk",product.getIlosc_w_koszyku()+"");
+                                        args.putInt("iloscStan", product.getIlosc_na_stanie());
+
+                                        args.putString("entryPoint", "scanProductOnList");
 
                                         mAddToCartButton.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
                                                 product.dodano_do_koszyka();
-                                                Toast.makeText(getApplicationContext(), new StringBuilder("Dodano produkt ").append(productsInCart.get(productsInCart.size()-1).getNazwa()).append("!"), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getApplicationContext(), new StringBuilder("Dodano produkt ").append(productsInCart.get(productsInCart.size()-1).getNazwa()).append("!"),
+                                                        Toast.LENGTH_SHORT).show();
                                                 hideScanFragment();
                                                 hideFragment();
                                             }
@@ -199,6 +203,7 @@ public class ScanActivity extends AppCompatActivity {
                                                 hideFragment();
                                             }
                                         });
+
                                         scanFragment.setArguments(args);
                                         listener.onUpdateView(args);
 
@@ -225,14 +230,20 @@ public class ScanActivity extends AppCompatActivity {
                                     args.putFloat("cena", scannedProduct.getCena());
                                     args.putString("nazwa",scannedProduct.getNazwa());
                                     args.putString("opis",scannedProduct.getOpis());
+                                    args.putString("iloscKoszyk",scannedProduct.getIlosc_w_koszyku()+"");
+                                    args.putInt("iloscStan", scannedProduct.getIlosc_na_stanie());
+
+                                    args.putString("entryPoint", "scanNewProduct");
+
+                                    productsInCart.add(scannedProduct);
 
                                     showScanFragment();
 
                                     mAddToCartButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
-                                            addProduct(scannedProduct);
-                                            Toast.makeText(getApplicationContext(), new StringBuilder("Dodano produkt ").append(productsInCart.get(productsInCart.size()-1).getNazwa()).append("!"), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), new StringBuilder("Dodano produkt ").append(productsInCart.get(productsInCart.size()-1).getNazwa()).append("!"),
+                                                    Toast.LENGTH_SHORT).show();
                                             hideScanFragment();
                                             hideFragment();
                                         }
@@ -242,6 +253,15 @@ public class ScanActivity extends AppCompatActivity {
                                     mBackButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
+
+                                            List<Object> toRemove = new ArrayList<Object>();
+                                            for(Product product : productsInCart){
+                                                if(product.getId_kod_kreskowy().equals(scannedProduct.getId_kod_kreskowy())){
+                                                    toRemove.add(product);
+                                                }
+                                            }
+                                            productsInCart.removeAll(toRemove);
+
                                             hideScanFragment();
                                             hideFragment();
                                         }
@@ -276,11 +296,6 @@ public class ScanActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("WS", "ERROR: ", e);
         }
-    }
-
-    public void addProduct (Product product){
-        product.dodano_do_koszyka();
-        productsInCart.add(product);
     }
 
     @Override
@@ -330,6 +345,22 @@ public class ScanActivity extends AppCompatActivity {
                 .hide(scanFragment)
                 .commit();
 
+    }
+
+    public void changeProductQuantity(String productId, int quantityNew){
+
+        for(Product product : productsInCart){
+            if(product.getId_kod_kreskowy().equals(productId)){
+                product.setIlosc_w_koszyku(quantityNew);
+            }
+        }
+
+    }
+
+    public static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
 }

@@ -23,5 +23,14 @@
     <string name="register">REGISTER</string>
     <string name="emptyedittext">You did not enter a username and/or password</string>
     <string name="badCredentials">Bad email address and/or password</string>
+    <string name="quantity">Quantity:</string>
+    <string name="delete">DELETE</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="product">Product:</string>
+    <string name="price">Price:</string>
+    <string name="details">Details:</string>
+    <string name="photo">photo</string>
+    <string name="summary">Summary</string>
 
 </resources>
