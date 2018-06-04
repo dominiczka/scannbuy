@@ -11,7 +11,8 @@
         android:layout_width="87dp"
         android:layout_height="75dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@color/common_google_signin_btn_text_dark_default" />
@@ -23,6 +24,8 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
         tools:text="TextView"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
         app:layout_constraintStart_toEndOf="@+id/image"
         app:layout_constraintTop_toTopOf="parent" />
 
