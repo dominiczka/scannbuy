@@ -10,8 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.math.BigDecimal;
-import java.util.List;
 import com.coders.goodest.scannbuy.barcode.BarcodeCaptureActivity;
 import com.coders.goodest.scannbuy.fragments.ScanFragment;
 import com.coders.goodest.scannbuy.models.Product;
@@ -25,7 +23,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ScanActivity extends AppCompatActivity {
 
@@ -301,6 +301,7 @@ public class ScanActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         if (scanFragment.isHidden()){
+            Toast.makeText(getApplicationContext(), "Your shopping progress will be lost. Do not leave if you do not want your progress to be gone!", Toast.LENGTH_SHORT);
             Intent intent = new Intent(ScanActivity.this, MainActivity.class);
             intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
