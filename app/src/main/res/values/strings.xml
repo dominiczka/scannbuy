@@ -20,7 +20,6 @@
     <string name="scanButton">scan</string>
     <string name="cartButton">cart</string>
     <string name="login">LOGIN!</string>
-    <string name="checkout">Checkout!</string>
     <string name="signUpHere">New here? Sign up!</string>
     <string name="signUp">Sign up!</string>
     <string name="emptyedittext">You did not enter a username and/or password</string>

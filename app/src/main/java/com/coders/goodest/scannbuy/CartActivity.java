@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.coders.goodest.scannbuy.fragments.ScanFragment;
 import com.coders.goodest.scannbuy.models.Product;
@@ -18,6 +19,7 @@ import com.coders.goodest.scannbuy.models.ProductAdapter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
@@ -25,7 +27,6 @@ public class CartActivity extends AppCompatActivity {
     ListView mCartProductsListView;
     TextView mSummaryTextView;
     ScanFragment scanFragment;
-    Button mCheckoutButton;
 
     ProductAdapter productAdapter;
 
@@ -82,30 +83,9 @@ public class CartActivity extends AppCompatActivity {
             }
 
         });
-
-        mCheckoutButton = (Button) findViewById(R.id.buttonFinalise);
-        mCheckoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                float summary = calculateSumToPay();
-                String sumString = Float.toString(summary);
-                Log.d("SUM",
-                        "sum: " + sumString);
-//                if (sumString.equals(0)){
-//                    Toast.makeText(getApplicationContext(), "Cart cannot be empty", Toast.LENGTH_SHORT);
-//                }
-              //  else {
-
-                    Intent intent = new Intent(CartActivity.this, CheckoutActivity.class);
-                    intent.putExtra( "sum", sumString);
-                    startActivity(intent);
-                    finish();
-             //   }
-            }
-        });
     }
 
-    public float calculateSumToPay(){
+    public void calculateSumToPay(){
 
         float toPay = 0;
 
@@ -117,7 +97,6 @@ public class CartActivity extends AppCompatActivity {
         toPay = round(toPay, 2);
 
         mSummaryTextView.setText("Total: " + Float.toString(toPay) + " zł");
-        return  toPay;
 
     }
 
