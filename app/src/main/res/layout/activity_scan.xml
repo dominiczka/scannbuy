@@ -10,6 +10,7 @@
     <FrameLayout
         android:id="@+id/scanFragmentContainerScanActivity"
         class="com.coders.goodest.scannbuy.fragments.ScanFragment"
+
         android:layout_width="0dp"
         android:layout_height="480dp"
         android:layout_marginEnd="8dp"
@@ -30,22 +31,25 @@
 
     <Button
         android:id="@+id/scanProductButton"
-        android:layout_width="wrap_content"
+        android:layout_width="82dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="106dp"
-        android:text="@string/scanButton"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="104dp"
         android:background="@color/colorButtonBackground"
-        android:textColor="@color/colorButtonText"
+        android:drawableLeft="@drawable/ic_photo_camera_black_24dp"
+        android:paddingLeft="28dp"
+        android:paddingRight="28dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/cartButton"
-        android:layout_width="wrap_content"
+        android:layout_width="82dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="36dp"
-        android:text="@string/cartButton"
+        android:drawableLeft="@drawable/ic_shopping_cart_black_24dp"
+        android:paddingLeft="28dp"
+        android:paddingRight="28dp"
         android:background="@color/colorButtonBackground"
         android:textColor="@color/colorButtonText"
         app:layout_constraintBottom_toBottomOf="@+id/scanProductButton"
@@ -72,11 +76,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:layout_marginLeft="60dp"
+        android:layout_marginLeft="30dp"
         android:background="@null"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:text="Add to cart"
+
+        android:drawableLeft="@drawable/ic_add_shopping_cart_black_24dp"
         android:textColor="@color/colorPrimary"
-        android:visibility="invisible"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 

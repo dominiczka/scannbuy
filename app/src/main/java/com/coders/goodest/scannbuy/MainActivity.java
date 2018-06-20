@@ -35,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
     Button buttonStartShopping;
     LocationManager locationManager;
     LocationListener locationListener;
-    Button mLocationButton;
-    Button getshopAsyncBtn;
+   // Button mLocationButton;
+   // Button getshopAsyncBtn;
     Location loc;
-    TextView coordinatesTV;
+    //TextView coordinatesTV;
 
 
     @Override
@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mLocationButton = findViewById(R.id.button2);
-        coordinatesTV = findViewById(R.id.coordinatesTV);
-        getshopAsyncBtn = findViewById(R.id.getshopAsyncBtn);
+       // mLocationButton = findViewById(R.id.button2);
+      //  coordinatesTV = findViewById(R.id.coordinatesTV);
+       // getshopAsyncBtn = findViewById(R.id.getshopAsyncBtn);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                         "latitude" + location.getLatitude());
                 int shop;
                 loc = location;
-                coordinatesTV.setText("lat: " + location.getLatitude() + " | lon: " + location.getLongitude());
+        //        coordinatesTV.setText("lat: " + location.getLatitude() + " | lon: " + location.getLongitude());
             }
 
 
@@ -98,13 +98,15 @@ public class MainActivity extends AppCompatActivity {
         else{
             configure_button();
         }
-
-        getshopAsyncBtn.setOnClickListener(new View.OnClickListener() {
+        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+        Log.i("LOCATION","Your location: " + loc);
+        queryShop("69","99");
+      /*  getshopAsyncBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 queryShop("69","99");
             }
-        });
+        });*/
 
 
         buttonStartShopping = (Button) findViewById(R.id.buttonStartShopping);
@@ -192,14 +194,14 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        mLocationButton.setOnClickListener(new View.OnClickListener() {
+    /*    mLocationButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("MissingPermission")
             @Override
             public void onClick(View view) {
                 locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
                 Log.i("LOCATION","Your location: " + loc);
             }
-        });
+        });*/
     }
 
     private void queryShop(String lattitude, String longitude) {
