@@ -75,15 +75,15 @@
         android:id="@+id/add_to_cart_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="24dp"
         android:background="@null"
+        android:drawableLeft="@drawable/ic_add_shopping_cart_black_24dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="Add to cart"
-
-        android:drawableLeft="@drawable/ic_add_shopping_cart_black_24dp"
         android:textColor="@color/colorPrimary"
+        android:visibility="invisible"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
@@ -92,12 +92,12 @@
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="264dp"
-        android:text="Back"
-        android:visibility="invisible"
         android:background="@null"
+        android:text="Back"
         android:textColor="@color/colorPrimary"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 

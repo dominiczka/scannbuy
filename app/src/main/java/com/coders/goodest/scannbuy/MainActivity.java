@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onSuccess(JSONArray jsonObject) {
-                            Toast.makeText(getApplicationContext(), jsonObject.toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),"Shop found" + jsonObject.toString(), Toast.LENGTH_LONG).show();
                         }
 
                         @Override

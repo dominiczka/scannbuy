@@ -50,20 +50,20 @@ public class ScanActivity extends AppCompatActivity {
 
         productsInCart = new ArrayList<Product>();
 
-        Product tmp = new Product("3333333333333", "fajki","lm", 15,100,"slodycze","Pychota",10,"1");
-        tmp.setImage(R.drawable.lm);
-        tmp.setIlosc_w_koszyku(6);
-        productsInCart.add(tmp);
-
-        Product tmp2 = new Product("1111111111111", "baton","snickers", 2.50F,60,"slodycze","takie dobre nawet",10,"1");
-        tmp2.setImage(R.drawable.lm);
-        tmp2.setIlosc_w_koszyku(4);
-        productsInCart.add(tmp2);
-
-        Product tmp3 = new Product("2222222222222", "gazeta","poranny", 1.90F,90,"papiernicze","newsy mocno",50,"1");
-        tmp3.setImage(R.drawable.lm);
-        tmp3.setIlosc_w_koszyku(2);
-        productsInCart.add(tmp3);
+//        Product tmp = new Product("3333333333333", "fajki","lm", 15,100,"slodycze","Pychota",10,"1");
+//        tmp.setImage(R.drawable.lm);
+//        tmp.setIlosc_w_koszyku(6);
+//        productsInCart.add(tmp);
+//
+//        Product tmp2 = new Product("1111111111111", "baton","snickers", 2.50F,60,"slodycze","takie dobre nawet",10,"1");
+//        tmp2.setImage(R.drawable.lm);
+//        tmp2.setIlosc_w_koszyku(4);
+//        productsInCart.add(tmp2);
+//
+//        Product tmp3 = new Product("2222222222222", "gazeta","poranny", 1.90F,90,"papiernicze","newsy mocno",50,"1");
+//        tmp3.setImage(R.drawable.lm);
+//        tmp3.setIlosc_w_koszyku(2);
+//        productsInCart.add(tmp3);
 
         mShopIdTextView = findViewById(R.id.shopIdTextView);
         mBackButton = findViewById(R.id.back_button);
