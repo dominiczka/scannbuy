@@ -17,6 +17,7 @@ import com.coders.goodest.scannbuy.models.Product;
 import com.coders.goodest.scannbuy.models.ProductAdapter;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,7 +117,11 @@ public class CartActivity extends AppCompatActivity {
 
         toPay = round(toPay, 2);
 
-        mSummaryTextView.setText("Total: " + Float.toString(toPay) + " zł");
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(2);
+        df.setMaximumFractionDigits(2);
+
+        mSummaryTextView.setText("Total: " + df.format(toPay) + " zł");
         return  toPay;
 
     }

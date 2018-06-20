@@ -12,6 +12,7 @@ import com.coders.goodest.scannbuy.R;
 import com.squareup.picasso.Picasso;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ProductAdapter extends ArrayAdapter<Product> {
@@ -39,6 +40,10 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 
         Product product = getItem(position);
 
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(2);
+        df.setMaximumFractionDigits(2);
+
         if (product != null) {
 
             TextView mProductNameTextView = view.findViewById(R.id.productName);
@@ -48,13 +53,14 @@ public class ProductAdapter extends ArrayAdapter<Product> {
             TextView mProductOverallPrice = view.findViewById(R.id.productOverallPrice);
             ImageView mProductImage = view.findViewById(R.id.image);
 
-            mProductOverallPrice.setText(Float.toString(round(product.getCena()*product.getIlosc_w_koszyku(),2))+" zł");
             String imageUrl = IMAGE_URL + product.getId_kod_kreskowy() + ".png";
             Picasso.with(getContext()).load(imageUrl).into(mProductImage);
             mProductNameTextView.setText(product.getNazwa());
-            mProductPriceTextView.setText(Float.toString(product.getCena())+" zł");
             mProductDescriptionTextView.setText(product.getOpis());
             mProductQuantityTextView.setText(Integer.toString(product.getIlosc_w_koszyku()));
+
+            mProductOverallPrice.setText(df.format(round(product.getCena()*product.getIlosc_w_koszyku(),2))+" zł");
+            mProductPriceTextView.setText(df.format(product.getCena())+" zł");
         }
         return view;
     }

@@ -16,6 +16,8 @@ import com.coders.goodest.scannbuy.R;
 import com.coders.goodest.scannbuy.ScanActivity;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+
 public class ScanFragment extends Fragment implements CartActivity.OnUpdateViewListener {
     public static final String IMAGE_URL = "http://scanandbuy.000webhostapp.com/products/photos/";
 
@@ -58,6 +60,10 @@ public class ScanFragment extends Fragment implements CartActivity.OnUpdateViewL
 
         if (bundle!=null){
 
+            DecimalFormat df = new DecimalFormat();
+            df.setMinimumFractionDigits(2);
+            df.setMaximumFractionDigits(2);
+
             final String productId =  bundle.getString("id");
             Log.i("id we fragmecie" , productId+"");
 
@@ -77,7 +83,7 @@ public class ScanFragment extends Fragment implements CartActivity.OnUpdateViewL
             Picasso.with(getContext()).load(imageUrl).into(productImage);
 
             productNameTextView.setText(productName);
-            productPriceTextView.setText(productPrice + "");
+            productPriceTextView.setText(df.format(productPrice));
             productDescriptionTextView.setText(productDesc);
             productQuantityCounterTextView.setText(productQuantity + "");
 
